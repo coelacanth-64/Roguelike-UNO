@@ -20,8 +20,7 @@ public class GameData {
     public static int displayCard(int cardID) {
         int id = 100;
         try{
-            InputStream csv = GameData.class.getClassLoader().getResourceAsStream("cardData.csv");
-            CSVReader reader = new CSVReaderBuilder(new InputStreamReader(csv, StandardCharsets.UTF_8))
+            CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
                     .withSkipLines(cardID + 1).build();
 
             String[] nextline;
@@ -103,10 +102,10 @@ public class GameData {
         int playColorInt, playValueInt, discardValueInt, discardColorInt;
 
         try {
-            CSVReader playableReader = new CSVReaderBuilder(new FileReader("C:\\Users\\ashto\\Documents\\CS491\\uno3\\src\\main\\resources\\cardData.csv"))
+            CSVReader playableReader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
                     .withSkipLines(cardID + 1).build();
 
-            CSVReader discardReader = new CSVReaderBuilder(new FileReader("C:\\Users\\ashto\\Documents\\CS491\\uno3\\src\\main\\resources\\cardData.csv"))
+            CSVReader discardReader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
                     .withSkipLines(GameData.discardPile.peek() + 1).build();
 
             System.out.println(GameData.discardPile.peek());

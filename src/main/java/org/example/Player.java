@@ -38,8 +38,7 @@ public class Player {
             cardID = hand.get(i);
 
             try {
-                InputStream csv = Player.class.getClassLoader().getResourceAsStream("cardData.csv");
-                CSVReader reader = new CSVReaderBuilder(new InputStreamReader(csv, StandardCharsets.UTF_8))
+                CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
                         .withSkipLines(cardID + 1).build();
 
                 String[] nextline;
