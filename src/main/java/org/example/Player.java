@@ -13,11 +13,14 @@ import java.util.Random;
 
 public class Player {
 
-    static ArrayList<Integer> hand = new ArrayList<>();
+    int turnValue;
+
+    ArrayList<Integer> hand = new ArrayList<>();
+
     private static final long seed = System.nanoTime();
     private static final Random generator = new Random(seed);
 
-    public static int drawCard(int drawAmount) {
+    public int drawCard(int drawAmount) {
         int cardID = 0;
 
         for (int i = 0; i < drawAmount && !GameData.deck.isEmpty(); i++) {
@@ -30,7 +33,7 @@ public class Player {
     }
 
     // Displays player hand
-    public static void displayHand(ArrayList<Integer> hand) {
+    public void displayHand(ArrayList<Integer> hand) {
         int cardID = 0;
 
         for(int i = 0; i < hand.size(); i++) {
@@ -54,7 +57,7 @@ public class Player {
     };
 
     // Initialize starting hand with given hand size and deck (interchangable)
-    public static ArrayList<Integer> drawStartHand(int handSize, ArrayList<Integer> deck) {
+    public ArrayList<Integer> drawStartHand(int handSize, ArrayList<Integer> deck) {
         for (int i = 0; i < handSize && !deck.isEmpty(); i++) {
             int randomIndex = generator.nextInt(deck.size()); // generate a random index from deck array
             int card = deck.remove(randomIndex); // remove a number from arraylist and set it as card

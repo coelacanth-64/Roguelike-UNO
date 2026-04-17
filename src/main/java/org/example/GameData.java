@@ -69,11 +69,11 @@ public class GameData {
         return(id);
     };
 
-    public static void playCard() { // test
+    public static void playCard(Player player) { // test
         System.out.println("playCardTest");
 
         System.out.println("\nIndex of card to play:");
-        Player.displayHand(Player.hand);
+        player.displayHand(player.hand);
         System.out.print("Current Card: ");
         displayCard(GameData.discardPile.peek());
 
@@ -85,16 +85,16 @@ public class GameData {
 
         // Draw card test
         if (cardSelection == 777) {
-            Player.drawCard(1);
-            System.out.println("Hand: " + Player.hand);
-            playCard();
+            player.drawCard(1);
+            System.out.println("Hand: " + player.hand);
+            playCard(player);
         }
-        else if (Player.hand.size() < cardSelection) {
+        else if (player.hand.size() < cardSelection) {
             System.out.println("Invalid card.");
-            playCard();
+            playCard(player);
         }
 
-        int cardID = Player.hand.get(selectionIndex);
+        int cardID = player.hand.get(selectionIndex);
 
         if (GameData.testPlayable(cardID)) {
 
@@ -105,11 +105,11 @@ public class GameData {
                         break;
                     case 10:
                         System.out.println("+2");
-                        Player.drawCard(2);
+                        player.drawCard(2);
                         break;
                     case 11:
                         System.out.println("+4");
-                        Player.drawCard(4);
+                        player.drawCard(4);
                         break;
                     case 12:
                         System.out.println("Skip");
@@ -124,15 +124,15 @@ public class GameData {
 
             // display chosen card, discard pile, and new hand
             // (remember, hand array is just card id, so only card id is selected & added)
-            GameData.discardPile.add(Player.hand.get(selectionIndex)); // add to discard pile
-            Player.hand.remove(selectionIndex); // remove from player hand
+            GameData.discardPile.add(player.hand.get(selectionIndex)); // add to discard pile
+            player.hand.remove(selectionIndex); // remove from player hand
 
             //display new hand
             //Player.displayHand(Player.hand);
         }
         else {
             System.out.println("Invalid card.");
-        } playCard();
+        } playCard(player);
         return;
     }
 
@@ -215,6 +215,31 @@ public class GameData {
         return deck;
     }
 
+    /*
+
+    public static void Select() {
+        System.out.println("Select an option:\n1. displayHand\n2. playCardTest\n3.");
+
+        Scanner selectScanner = new Scanner(System.in);
+        Integer select = selectScanner.nextInt();
+
+        switch (select) {
+            default:
+                System.out.println("Please select a valid option.");
+                Select();
+            case 1:
+                player.displayHand(player.drawStartHand(7, GameData.deckInit(52)));
+                break;
+            case 2:
+                GameData.playCard(player);
+                break;
+        }
+
+        return;
+    }
+
+    */
+
 /*
     public static void gameMenu() {
         System.out.println("Welcome to UNO!\nChoose an option:\n1. Play\n2.Settings (WIP)\n3.Close game.\n");
@@ -250,6 +275,28 @@ public class GameData {
 */
 
     public static void main(String[] args) {
+        Player player1 = new Player();
+            player1.turnValue = 1;
+        Player player2 = new Player();
+            player2.turnValue = 2;
+        Player player3 = new Player();
+            player3.turnValue = 3;
+        Player player4 = new Player();
+            player4.turnValue = 4;
+
+        deckInit(52);
+        player1.drawStartHand(7, deck);
+        player2.drawStartHand(7, deck);
+        player3.drawStartHand(7, deck);
+        player4.drawStartHand(7, deck);
+        discardInit();
+
+        System.out.println(player1.hand);
+        System.out.println(player2.hand);
+        System.out.println(player3.hand);
+        System.out.println(player4.hand);
+
+        playCard(player1);
     }
 
 }
