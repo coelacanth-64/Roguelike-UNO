@@ -70,9 +70,8 @@ public class GameData {
     };
 
     public static void playCard(Player player) { // test
-        System.out.println("playCardTest");
-
-        System.out.println("\nIndex of card to play:");
+        //System.out.println("playCardTest");
+        System.out.println("Index of card to play:");
         player.displayHand(player.hand);
         System.out.print("Current Card: ");
         displayCard(GameData.discardPile.peek());
@@ -83,15 +82,18 @@ public class GameData {
 
         int selectionIndex = cardSelection - 1; // -1 so indexing starts at 1 for convenience
 
-        // Draw card test
+        // Draw card
         if (cardSelection == 777) {
             player.drawCard(1);
             System.out.println("Hand: " + player.hand);
             playCard(player);
+            return;
         }
+        // OOB card detection
         else if (player.hand.size() < cardSelection) {
             System.out.println("Invalid card.");
             playCard(player);
+            return;
         }
 
         int cardID = player.hand.get(selectionIndex);
@@ -132,8 +134,7 @@ public class GameData {
         }
         else {
             System.out.println("Invalid card.");
-        } playCard(player);
-        return;
+        }
     }
 
     // Test card playability
@@ -274,29 +275,54 @@ public class GameData {
     }
 */
 
+    static int turnValue;
+
     public static void main(String[] args) {
         Player player1 = new Player();
-            player1.turnValue = 1;
+            player1.turnValue = 0;
         Player player2 = new Player();
-            player2.turnValue = 2;
+            player2.turnValue = 1;
         Player player3 = new Player();
-            player3.turnValue = 3;
+            player3.turnValue = 2;
         Player player4 = new Player();
-            player4.turnValue = 4;
+            player4.turnValue = 3;
 
         deckInit(52);
         player1.drawStartHand(7, deck);
         player2.drawStartHand(7, deck);
         player3.drawStartHand(7, deck);
         player4.drawStartHand(7, deck);
+        System.out.println(deck);
         discardInit();
+/*
 
         System.out.println(player1.hand);
         System.out.println(player2.hand);
         System.out.println(player3.hand);
         System.out.println(player4.hand);
 
-        playCard(player1);
+ */
+
+        for (int turnCount = 0; turnCount > -1; turnCount++) {
+            turnValue = turnCount % 4;
+
+            if (turnValue == player1.turnValue) {
+                System.out.println("Player 1 turn:");
+                playCard(player1);
+            }
+            else if (turnValue == player2.turnValue) {
+                System.out.println("Player 2 turn:");
+                playCard(player2);
+            }
+            else if (turnValue == player3.turnValue) {
+                System.out.println("Player 3 turn:");
+                playCard(player3);
+            }
+            else if (turnValue == player4.turnValue) {
+                System.out.println("Player 4 turn:");
+                playCard(player4);
+            }
+        }
     }
 
 }
