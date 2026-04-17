@@ -51,4 +51,4 @@ yellow Plus2,48,10,4,,
 yellow Plus4,49,11,4,,
 yellow Skip,50,12,4,,
 yellow Reverse,51,13,4,,
-test Special,52,51,1,,
+test Special,52,51,1,Special Test,1

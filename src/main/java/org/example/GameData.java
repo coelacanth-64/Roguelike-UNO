@@ -17,6 +17,25 @@ public class GameData {
     static ArrayList<Integer> deck = new ArrayList<>();
     static Stack<Integer> discardPile = new Stack<>();
 
+    public static int getCardInfo(int id, int index) {
+        int value = 0;
+
+        try{
+            CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
+                    .withSkipLines(id + 1).build();
+            String[] nextline;
+            nextline = reader.readNext();
+
+            if(nextline != null) {
+                value = Integer.parseInt(nextline[index]);
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return value;
+    }
+
     public static int displayCard(int cardID) {
         int id = 100;
         try{
@@ -77,21 +96,43 @@ public class GameData {
 
         int cardID = Player.hand.get(selectionIndex);
 
-
-
         if (GameData.testPlayable(cardID)) {
+
+            if (getCardInfo(cardID, 2) == 10 || getCardInfo(cardID, 2) == 11 || getCardInfo(cardID, 2) == 12 || getCardInfo(cardID, 2) == 13) {
+                switch (getCardInfo(cardID, 2)) {
+                    default:
+                        System.out.println("Error");
+                        break;
+                    case 10:
+                        System.out.println("+2");
+                        Player.drawCard(2);
+                        break;
+                    case 11:
+                        System.out.println("+4");
+                        Player.drawCard(4);
+                        break;
+                    case 12:
+                        System.out.println("Skip");
+                        break;
+                    case 13:
+                        System.out.println("Reverse");
+                        break;
+
+                }
+            }
+
+
             // display chosen card, discard pile, and new hand
             // (remember, hand array is just card id, so only card id is selected & added)
             GameData.discardPile.add(Player.hand.get(selectionIndex)); // add to discard pile
             Player.hand.remove(selectionIndex); // remove from player hand
 
-            Player.displayHand(Player.hand); // display new hand
-            playCard();
+            //display new hand
+            //Player.displayHand(Player.hand);
         }
         else {
             System.out.println("Invalid card.");
-            playCard();
-        }
+        } playCard();
         return;
     }
 
