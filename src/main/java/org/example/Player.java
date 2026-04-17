@@ -4,6 +4,9 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -35,7 +38,8 @@ public class Player {
             cardID = hand.get(i);
 
             try {
-                CSVReader reader = new CSVReaderBuilder(new FileReader("C:\\Users\\ashto\\Documents\\CS491\\uno3\\src\\main\\resources\\cardData.csv"))
+                InputStream csv = Player.class.getClassLoader().getResourceAsStream("cardData.csv");
+                CSVReader reader = new CSVReaderBuilder(new InputStreamReader(csv, StandardCharsets.UTF_8))
                         .withSkipLines(cardID + 1).build();
 
                 String[] nextline;
