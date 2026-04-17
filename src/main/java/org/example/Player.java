@@ -11,9 +11,7 @@ import java.util.Random;
 public class Player {
 
     int turnValue;
-
     ArrayList<Integer> hand = new ArrayList<>();
-
     private static final long seed = System.nanoTime();
     private static final Random generator = new Random(seed);
 
@@ -29,9 +27,8 @@ public class Player {
         return cardID;
     }
 
-    // Displays player hand
     public void displayHand(ArrayList<Integer> hand) {
-        int cardID = 0;
+        int cardID;
 
         for(int i = 0; i < hand.size(); i++) {
             System.out.print(i + 1 + ": ");
@@ -51,9 +48,8 @@ public class Player {
             }
             System.out.println("");
         }
-    };
+    }
 
-    // Initialize starting hand with given hand size and deck (interchangable)
     public ArrayList<Integer> handInit(int handSize, ArrayList<Integer> deck) {
         for (int i = 0; i < handSize && !deck.isEmpty(); i++) {
             int randomIndex = generator.nextInt(deck.size()); // generate a random index from deck array

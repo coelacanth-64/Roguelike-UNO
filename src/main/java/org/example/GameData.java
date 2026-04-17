@@ -10,18 +10,14 @@ public class GameData {
 
     private static final long seed = System.nanoTime();
     private static final Random generator = new Random(seed);
-
     static ArrayList<Integer> deck = new ArrayList<>();
     static Stack<Integer> discardPile = new Stack<>();
-
     static boolean drawFour = false;
     static boolean drawTwo = false;
     static boolean skip = false;
     static boolean reverse = false;
-
-    static boolean debug;
+    static boolean debug = false;
     static boolean gameEnabled = true;
-
     static int turnDirection = 1;
 
     public static int getCardInfo(int id, int index) {
@@ -189,7 +185,6 @@ public class GameData {
         }
     }
 
-    // Initialize discard pile
     public static Stack<Integer> discardInit() {
         int randomIndex = generator.nextInt(deck.size()); // generate a random index from deck array
         int card = deck.remove(randomIndex); // remove a number from arraylist and set it as card
@@ -198,7 +193,6 @@ public class GameData {
         return discardPile;
     }
 
-    // Initialize deck
     public static ArrayList<Integer> deckInit (int deckSize) {
 
         for(int i = 0; i <= deckSize; i++) {
@@ -317,8 +311,6 @@ public class GameData {
     static int turnValue;
 
     public static void main(String[] args) {
-
-        debug = false;
         initGame(1, 52);
     }
 }
