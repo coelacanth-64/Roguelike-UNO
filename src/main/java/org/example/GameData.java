@@ -17,6 +17,13 @@ public class GameData {
     static ArrayList<Integer> deck = new ArrayList<>();
     static Stack<Integer> discardPile = new Stack<>();
 
+    static boolean drawFour = false;
+    static boolean drawTwo = false;
+    static boolean skip = false;
+    static boolean reverse = false;
+
+    static int turnDirection = 1;
+
     public static int getCardInfo(int id, int index) {
         int value = 0;
 
@@ -103,27 +110,28 @@ public class GameData {
             if (getCardInfo(cardID, 2) == 10 || getCardInfo(cardID, 2) == 11 || getCardInfo(cardID, 2) == 12 || getCardInfo(cardID, 2) == 13) {
                 switch (getCardInfo(cardID, 2)) {
                     default:
-                        System.out.println("Error");
+                        System.out.println("Invalid action card");
                         break;
                     case 10:
                         System.out.println("+2");
-                        player.drawCard(2);
+                        drawTwo = true;
                         break;
                     case 11:
                         System.out.println("+4");
-                        player.drawCard(4);
+                        drawFour = true;
                         break;
                     case 12:
                         System.out.println("Skip");
+                        skip = true;
                         break;
                     case 13:
                         System.out.println("Reverse");
+                        reverse = !reverse;
+                        turnDirection *= -1;
                         break;
 
                 }
             }
-
-
             // display chosen card, discard pile, and new hand
             // (remember, hand array is just card id, so only card id is selected & added)
             GameData.discardPile.add(player.hand.get(selectionIndex)); // add to discard pile
@@ -134,6 +142,8 @@ public class GameData {
         }
         else {
             System.out.println("Invalid card.");
+            playCard(player);
+            return;
         }
     }
 
@@ -279,13 +289,14 @@ public class GameData {
 
     public static void main(String[] args) {
         Player player1 = new Player();
-            player1.turnValue = 0;
         Player player2 = new Player();
-            player2.turnValue = 1;
         Player player3 = new Player();
-            player3.turnValue = 2;
         Player player4 = new Player();
-            player4.turnValue = 3;
+
+        player1.turnValue = 0;
+        player2.turnValue = 1;
+        player3.turnValue = 2;
+        player4.turnValue = 3;
 
         deckInit(52);
         player1.drawStartHand(7, deck);
@@ -294,7 +305,13 @@ public class GameData {
         player4.drawStartHand(7, deck);
         System.out.println(deck);
         discardInit();
-/*
+
+        player1.hand.add(12);
+        player2.hand.add(12);
+        player3.hand.add(12);
+        player4.hand.add(12);
+
+        /*
 
         System.out.println(player1.hand);
         System.out.println(player2.hand);
@@ -303,26 +320,81 @@ public class GameData {
 
  */
 
-        for (int turnCount = 0; turnCount > -1; turnCount++) {
-            turnValue = turnCount % 4;
+        int turnCount = 0;
+
+        while (true) {
+            turnValue = Math.floorMod(turnCount, 4);
+            System.out.println("turnCount: " + turnCount + " | turnValue: " + turnValue);
 
             if (turnValue == player1.turnValue) {
                 System.out.println("Player 1 turn:");
-                playCard(player1);
+
+                if (drawFour) {
+                    player1.drawCard(4);
+                    drawFour = false;
+                    playCard(player1);
+                }
+                if (drawTwo) {
+                    player1.drawCard(2);
+                    drawTwo = false;
+                    playCard(player1);
+                }
+                if (skip) {
+                    skip = false;
+                } else playCard(player1);
             }
             else if (turnValue == player2.turnValue) {
                 System.out.println("Player 2 turn:");
-                playCard(player2);
+
+                if (drawFour) {
+                    player2.drawCard(4);
+                    drawFour = false;
+                    playCard(player2);
+                }
+                if (drawTwo) {
+                    player2.drawCard(2);
+                    drawTwo = false;
+                    playCard(player2);
+                }
+                if (skip) {
+                    skip = false;
+                } else playCard(player2);
             }
             else if (turnValue == player3.turnValue) {
                 System.out.println("Player 3 turn:");
-                playCard(player3);
+
+                if (drawFour) {
+                    player3.drawCard(4);
+                    drawFour = false;
+                    playCard(player3);
+                }
+                if (drawTwo) {
+                    player3.drawCard(2);
+                    drawTwo = false;
+                    playCard(player3);
+                }
+                if (skip) {
+                    skip = false;
+                } else playCard(player3);
             }
             else if (turnValue == player4.turnValue) {
                 System.out.println("Player 4 turn:");
-                playCard(player4);
+
+                if (drawFour) {
+                    player4.drawCard(4);
+                    drawFour = false;
+                    playCard(player4);
+                }
+                if (drawTwo) {
+                    player4.drawCard(2);
+                    drawTwo = false;
+                    playCard(player4);
+                }
+                if (skip) {
+                    skip = false;
+                } else playCard(player4);
             }
+            turnCount += turnDirection;
         }
     }
-
 }
