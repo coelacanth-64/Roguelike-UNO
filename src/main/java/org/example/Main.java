@@ -1,8 +1,6 @@
 package org.example;
 
-import java.io.FileReader;
 import java.util.*;
-import com.opencsv.*;
 
 public class Main {
 
@@ -23,7 +21,7 @@ public class Main {
                 Player.displayHand(Player.drawStartHand(7, GameData.deckInit(52)));
                 break;
             case 2:
-                GameData.playCardTest();
+                GameData.playCard();
                 break;
         }
 

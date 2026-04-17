@@ -26,7 +26,19 @@ public class GameData {
                 id = Integer.parseInt(nextline[1]);
                 System.out.print("id: " + nextline[1]); // index is column number
                 System.out.print(" | value: " + nextline[2]); // index is column number
-                System.out.print(" | color: " + nextline[3]); // index is column number
+                System.out.print(" | color: "); // index is column number
+                    if (Objects.equals(nextline[3], "1")) {
+                        System.out.print("red");
+                    }
+                    if (Objects.equals(nextline[3], "2")) {
+                        System.out.print("blue");
+                }
+                    if (Objects.equals(nextline[3], "3")) {
+                        System.out.print("green");
+                }
+                    if (Objects.equals(nextline[3], "4")) {
+                        System.out.print("yellow");
+                }
             }
         }catch (Exception e){
             System.out.println(e);
@@ -35,7 +47,7 @@ public class GameData {
         return(id);
     };
 
-    public static void playCardTest() { // test
+    public static void playCard() { // test
         System.out.println("playCardTest");
 
         System.out.println("\nIndex of card to play:");
@@ -47,26 +59,39 @@ public class GameData {
         Integer cardSelection = playCardScanner.nextInt();
         playCardScanner.nextLine();
 
-        int cardIndex = Player.hand.get(cardSelection) + 1;
+        int selectionIndex = cardSelection - 1; // -1 so indexing starts at 1 for convenience
 
-        if (GameData.testPlayable(cardIndex)) {
+        // Draw card test
+        if (cardSelection == 777) {
+            Player.drawCard(1);
+            System.out.println("Hand: " + Player.hand);
+            playCard();
+        }
+        else if (Player.hand.size() < cardSelection) {
+            System.out.println("Invalid card.");
+            playCard();
+        }
+
+        int cardID = Player.hand.get(selectionIndex);
+
+
+        if (GameData.testPlayable(cardID)) {
             // display chosen card, discard pile, and new hand
             // (remember, hand array is just card id, so only card id is selected & added)
-            System.out.println(Player.hand.get(cardIndex - 1));
-            GameData.discardPile.add(Player.hand.get(cardIndex - 1)); // add to discard pile
-            Player.hand.remove(cardIndex - 1); // remove from player hand
+            GameData.discardPile.add(Player.hand.get(selectionIndex)); // add to discard pile
+            Player.hand.remove(selectionIndex); // remove from player hand
 
             Player.displayHand(Player.hand); // display new hand
-            playCardTest();
+            playCard();
         }
         else {
-            System.out.println("Please select a valid card.");
-            playCardTest();
+            System.out.println("Invalid card.");
+            playCard();
         }
         return;
     }
 
-    // test card playability
+    // Test card playability
     public static boolean testPlayable(int cardID) {
 
         String playColor = "", playValue= "", discardValue="", discardColor = "";
@@ -99,22 +124,21 @@ public class GameData {
             System.out.println(e);
         }
 
-        System.out.print("Before setting int value:\n"
-                + "playColorInt: " +   " playColor: " + playColor
-                + "\nplayValueInt: " +   " playValue: " + playValue
-                + "\ndiscardColorInt: " +   " discardColor: " + discardColor
-                + "\ndiscardValueInt: " +   " discardValue: " + discardValue + "\n\n");
-
         playColorInt = Integer.parseInt(playColor);
         playValueInt = Integer.parseInt(playValue);
         discardColorInt = Integer.parseInt(discardColor);
         discardValueInt = Integer.parseInt(discardValue);
+
+        /*
+
+        Testing for correct values
 
         System.out.print("After setting int value:\n"
                      + "playColorInt: " + playColorInt + " playColor: " + playColor
                      + "\nplayValueInt: " + playValueInt + " playValue: " + playValue
                      + "\ndiscardColorInt: " + discardColorInt + " discardColor: " + discardColor
                      + "\ndiscardValueInt: " + discardValueInt + " discardValue: " + discardValue + "\n");
+         */
 
         if (playColorInt == discardColorInt || playValueInt == discardValueInt) {
             System.out.println("True");
@@ -126,6 +150,8 @@ public class GameData {
         }
     }
 
+
+    // Initialize discard pile
     public static Stack<Integer> discardInit() {
         int randomIndex = generator.nextInt(deck.size()); // generate a random index from deck array
         int card = deck.remove(randomIndex); // remove a number from arraylist and set it as card
@@ -133,6 +159,7 @@ public class GameData {
         return discardPile;
     }
 
+    // Initialize deck
     public static ArrayList<Integer> deckInit (int deckSize) {
 
         for(int i = 0; i <= deckSize; i++) {
@@ -178,7 +205,6 @@ public class GameData {
 */
 
     public static void main(String[] args) {
-
     }
 
 }
