@@ -75,6 +75,7 @@ public class GameData {
         int cardID = Player.hand.get(selectionIndex);
 
 
+
         if (GameData.testPlayable(cardID)) {
             // display chosen card, discard pile, and new hand
             // (remember, hand array is just card id, so only card id is selected & added)
