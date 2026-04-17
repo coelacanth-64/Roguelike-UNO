@@ -4,9 +4,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class GameData {
@@ -21,6 +18,9 @@ public class GameData {
     static boolean drawTwo = false;
     static boolean skip = false;
     static boolean reverse = false;
+
+    static boolean debug;
+    static boolean gameEnabled = true;
 
     static int turnDirection = 1;
 
@@ -77,7 +77,7 @@ public class GameData {
     };
 
     public static void playCard(Player player) { // test
-        //System.out.println("playCardTest");
+        if (debug) System.out.println("playCardTest");
         System.out.println("Index of card to play:");
         player.displayHand(player.hand);
         System.out.print("Current Card: ");
@@ -136,9 +136,6 @@ public class GameData {
             // (remember, hand array is just card id, so only card id is selected & added)
             GameData.discardPile.add(player.hand.get(selectionIndex)); // add to discard pile
             player.hand.remove(selectionIndex); // remove from player hand
-
-            //display new hand
-            //Player.displayHand(Player.hand);
         }
         else {
             System.out.println("Invalid card.");
@@ -147,7 +144,6 @@ public class GameData {
         }
     }
 
-    // Test card playability
     public static boolean testPlayable(int cardID) {
 
         String playColor = "", playValue= "", discardValue="", discardColor = "";
@@ -159,8 +155,6 @@ public class GameData {
 
             CSVReader discardReader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
                     .withSkipLines(GameData.discardPile.peek() + 1).build();
-
-            System.out.println(GameData.discardPile.peek());
 
             String[] nextlinePlay;
             nextlinePlay = playableReader.readNext();
@@ -176,7 +170,7 @@ public class GameData {
                 discardValue = (nextlineDiscard[2]); // get value
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
 
@@ -185,33 +179,22 @@ public class GameData {
         discardColorInt = Integer.parseInt(discardColor);
         discardValueInt = Integer.parseInt(discardValue);
 
-        /*
-
-        Testing for correct values
-
-        System.out.print("After setting int value:\n"
-                     + "playColorInt: " + playColorInt + " playColor: " + playColor
-                     + "\nplayValueInt: " + playValueInt + " playValue: " + playValue
-                     + "\ndiscardColorInt: " + discardColorInt + " discardColor: " + discardColor
-                     + "\ndiscardValueInt: " + discardValueInt + " discardValue: " + discardValue + "\n");
-         */
-
         if (playColorInt == discardColorInt || playValueInt == discardValueInt) {
-            System.out.println("True");
+            if (debug) System.out.println("True; testPlayable Finished.");
             return(true);
         }
         else {
-            System.out.println("False");
+            if (debug) System.out.println("False; testPlayable Finished.");
             return(false);
         }
     }
-
 
     // Initialize discard pile
     public static Stack<Integer> discardInit() {
         int randomIndex = generator.nextInt(deck.size()); // generate a random index from deck array
         int card = deck.remove(randomIndex); // remove a number from arraylist and set it as card
         discardPile.add(card); // add that index value to discard
+        if (debug) System.out.println("discardInit Finished" + discardPile);
         return discardPile;
     }
 
@@ -222,109 +205,37 @@ public class GameData {
             deck.add(i);
         }
 
-        System.out.println(deck + "\ndeckInit finished.");
+        if (debug) System.out.println("deckInit finished." + deck);
         return deck;
     }
 
-    /*
+    public static void initGame(int handSize, int deckSize) {
+        deckInit(deckSize);
 
-    public static void Select() {
-        System.out.println("Select an option:\n1. displayHand\n2. playCardTest\n3.");
-
-        Scanner selectScanner = new Scanner(System.in);
-        Integer select = selectScanner.nextInt();
-
-        switch (select) {
-            default:
-                System.out.println("Please select a valid option.");
-                Select();
-            case 1:
-                player.displayHand(player.drawStartHand(7, GameData.deckInit(52)));
-                break;
-            case 2:
-                GameData.playCard(player);
-                break;
-        }
-
-        return;
-    }
-
-    */
-
-/*
-    public static void gameMenu() {
-        System.out.println("Welcome to UNO!\nChoose an option:\n1. Play\n2.Settings (WIP)\n3.Close game.\n");
-        Scanner scanner = new Scanner(System.in);
-
-        Integer select = scanner.nextInt();
-        switch (select) {
-            default:
-                System.out.println("Please select a valid option.");
-                gameMenu();
-            case 1:
-                startGame();
-                break;
-            case 2:
-                Settings();
-                break;
-            case 3:
-                System.out.println("Goodbye!");
-                System.exit(0);
-                break;
-        }
-    }
-*/
-
-/*
-    public static void startGame() {
-        System.out.println("Started.");
-    }
-
-    public static void Settings() {
-        System.out.println("Settings.");
-    }
-*/
-
-    static int turnValue;
-
-    public static void main(String[] args) {
         Player player1 = new Player();
-        Player player2 = new Player();
-        Player player3 = new Player();
-        Player player4 = new Player();
-
+        player1.handInit(handSize, deck);
         player1.turnValue = 0;
+
+        Player player2 = new Player();
+        player2.handInit(handSize, deck);
         player2.turnValue = 1;
+
+        Player player3 = new Player();
+        player3.handInit(handSize, deck);
         player3.turnValue = 2;
+
+        Player player4 = new Player();
+        player4.handInit(handSize, deck);
         player4.turnValue = 3;
 
-        deckInit(52);
-        player1.drawStartHand(7, deck);
-        player2.drawStartHand(7, deck);
-        player3.drawStartHand(7, deck);
-        player4.drawStartHand(7, deck);
-        System.out.println(deck);
         discardInit();
-
-        player1.hand.add(12);
-        player2.hand.add(12);
-        player3.hand.add(12);
-        player4.hand.add(12);
-
-        /*
-
-        System.out.println(player1.hand);
-        System.out.println(player2.hand);
-        System.out.println(player3.hand);
-        System.out.println(player4.hand);
-
- */
 
         int turnCount = 0;
 
-        while (true) {
+        // while true, the game runs
+        while (gameEnabled) {
             turnValue = Math.floorMod(turnCount, 4);
-            System.out.println("turnCount: " + turnCount + " | turnValue: " + turnValue);
+            if (debug) System.out.println("turnCount: " + turnCount + " | turnValue: " + turnValue);
 
             if (turnValue == player1.turnValue) {
                 System.out.println("Player 1 turn:");
@@ -395,6 +306,19 @@ public class GameData {
                 } else playCard(player4);
             }
             turnCount += turnDirection;
+
+            if (player1.hand.isEmpty() || player2.hand.isEmpty() || player3.hand.isEmpty() ||player4.hand.isEmpty()) {
+                System.out.println("Winner decided! Congratulations!") ;
+                gameEnabled = false;
+            }
         }
+    }
+
+    static int turnValue;
+
+    public static void main(String[] args) {
+
+        debug = false;
+        initGame(1, 52);
     }
 }
