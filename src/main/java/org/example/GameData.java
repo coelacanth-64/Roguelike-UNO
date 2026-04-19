@@ -59,15 +59,21 @@ public class GameData {
                     if (Objects.equals(nextline[3], "1")) {
                         System.out.print("red");
                     }
-                    if (Objects.equals(nextline[3], "2")) {
+                    else if (Objects.equals(nextline[3], "2")) {
                         System.out.print("blue");
                 }
-                    if (Objects.equals(nextline[3], "3")) {
+                    else if (Objects.equals(nextline[3], "3")) {
                         System.out.print("green");
                 }
-                    if (Objects.equals(nextline[3], "4")) {
+                    else if (Objects.equals(nextline[3], "4")) {
                         System.out.print("yellow");
                 }
+                    else if (Objects.equals(nextline[3], "5")) {
+                        System.out.print("wild");
+                }
+                    else {
+                        System.out.print("Card color error.");
+                    }
             }
         }catch (Exception e){
             System.out.println(e);
@@ -106,33 +112,45 @@ public class GameData {
         int cardID = player.hand.get(selectionIndex);
 
         if (GameData.testPlayable(cardID)) {
-
-            if (getCardInfo(cardID, 2) == 10 || getCardInfo(cardID, 2) == 11 || getCardInfo(cardID, 2) == 12 || getCardInfo(cardID, 2) == 13) {
+            if ((getCardInfo(cardID, 2) == 10 || getCardInfo(cardID, 2) == 11 || getCardInfo(cardID, 2) == 12 || getCardInfo(cardID, 2) == 13)) {
                 switch (getCardInfo(cardID, 2)) {
                     default:
-                        System.out.println("Invalid action card");
+                        System.out.println("Error indexing action card");
                         break;
                     case 10:
-                        System.out.println("+2");
+                        if (debug) System.out.println("+2");
                         drawTwo = true;
                         break;
-                    case 11:
-                        System.out.println("+4");
-                        drawFour = true;
-                        break;
                     case 12:
-                        System.out.println("Skip");
+                        if (debug) System.out.println("Skip");
                         skip = true;
                         break;
                     case 13:
-                        System.out.println("Reverse");
+                        if (debug) System.out.println("Reverse");
                         reverse = !reverse;
                         turnDirection *= -1;
                         break;
-
                 }
             }
-            // display chosen card, discard pile, and new hand
+            else if (getCardInfo(cardID, 2) >= 50) {
+                if (debug) System.out.println("powerCard");
+                switch (getCardInfo(cardID, 2)) {
+                    default:
+                        System.out.println("Error indexing power card");
+                        break;
+                    case 51:
+                        if (debug) System.out.println("+4");
+                        powerCards.drawFour(cardID);
+                        break;
+                    case 52:
+                        if (debug) System.out.println("Wild");
+                        powerCards.wild(cardID);
+                        break;
+                }
+            }
+
+            // at the end, regardless of played card,
+            // add card to discard pile, remove from player hand
             // (remember, hand array is just card id, so only card id is selected & added)
             GameData.discardPile.add(player.hand.get(selectionIndex)); // add to discard pile
             player.hand.remove(selectionIndex); // remove from player hand
@@ -146,8 +164,7 @@ public class GameData {
 
     public static boolean testPlayable(int cardID) {
 
-        String playColor = "", playValue= "", discardValue="", discardColor = "";
-        int playColorInt, playValueInt, discardValueInt, discardColorInt;
+        int playColor = 0, playValue = 0, discardValue = 0, discardColor = 0, playID = 0;
 
         try {
             CSVReader playableReader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
@@ -159,27 +176,23 @@ public class GameData {
             String[] nextlinePlay;
             nextlinePlay = playableReader.readNext();
             if (nextlinePlay != null) {
-                playColor = (nextlinePlay[3]);
-                playValue = (nextlinePlay[2]); // get value
+                playColor = Integer.parseInt(nextlinePlay[3]);
+                playValue = Integer.parseInt(nextlinePlay[2]);
+                playID = Integer.parseInt(nextlinePlay[1]);
             }
 
             String[] nextlineDiscard;
             nextlineDiscard = discardReader.readNext();
             if (nextlineDiscard != null) {
-                discardColor = (nextlineDiscard[3]); // get color
-                discardValue = (nextlineDiscard[2]); // get value
+                discardColor =  Integer.parseInt(nextlineDiscard[3]);
+                discardValue = Integer.parseInt(nextlineDiscard[2]);
             }
 
         } catch (Exception e) {
             System.out.println(e);
         }
 
-        playColorInt = Integer.parseInt(playColor);
-        playValueInt = Integer.parseInt(playValue);
-        discardColorInt = Integer.parseInt(discardColor);
-        discardValueInt = Integer.parseInt(discardValue);
-
-        if (playColorInt == discardColorInt || playValueInt == discardValueInt) {
+        if (playColor == discardColor || playValue == discardValue || playColor == 5 || playID > 50) {
             if (debug) System.out.println("True; testPlayable Finished.");
             return(true);
         }
@@ -319,6 +332,6 @@ public class GameData {
     public static void main(String[] args) {
 
         debug = false;
-        initGame(1, 52);
+        initGame(7, 52);
     }
 }
