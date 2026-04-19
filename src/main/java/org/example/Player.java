@@ -61,7 +61,7 @@ public class Player {
             hand.add(card); // add that index value to hand
         }
 
-        if (GameData.debug) System.out.println(hand + "\nhandInit finished.");
+        if (Main.debug) System.out.println(hand + "\nhandInit finished.");
         return new ArrayList<>(hand);
     }
 

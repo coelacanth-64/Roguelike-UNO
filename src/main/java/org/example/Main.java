@@ -4,7 +4,10 @@ import java.util.*;
 
 public class Main {
 
-        public static void main (String[]args){
+    static boolean debug;
 
+        public static void main (String[]args){
+            debug = true;
+            GameData.initGame(7, 52);
         }
     }

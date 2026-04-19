@@ -18,9 +18,12 @@ public class GameData {
     static boolean drawTwo = false;
     static boolean skip = false;
     static boolean reverse = false;
-
-    static boolean debug;
     static boolean gameEnabled = true;
+
+    static int colorid = 5;
+    static String color;
+    static int value = 50;
+    static int cid = 54; // card id
 
     static int turnDirection = 1;
 
@@ -44,7 +47,6 @@ public class GameData {
     }
 
     public static int displayCard(int cardID) {
-        int id = 100;
         try{
             CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
                     .withSkipLines(cardID + 1).build();
@@ -52,26 +54,33 @@ public class GameData {
             String[] nextline;
             nextline = reader.readNext();
             if(nextline != null) {
-                id = Integer.parseInt(nextline[1]);
-                System.out.print("id: " + nextline[1]); // index is column number
-                System.out.print(" | value: " + nextline[2]); // index is column number
-                System.out.print(" | color: "); // index is column number
-                    if (Objects.equals(nextline[3], "1")) {
+                switch (colorid) {
+                    case 1: color = "red"; break;
+                    case 2: color = "blue"; break;
+                    case 3: color = "green"; break;
+                    case 4: color = "yellow"; break;
+                    case 5: color = "colorless"; break;
+                }
+                System.out.print("id: " + cid); // index is column number
+                System.out.print(" | value: " + value); // index is column number
+                System.out.print(" | color: " + color); // index is column number
+                if (Main.debug) System.out.print(colorid);
+                    if (Objects.equals(nextline[3], "1") && Main.debug) {
                         System.out.print("red");
                     }
-                    else if (Objects.equals(nextline[3], "2")) {
+                    else if (Objects.equals(nextline[3], "2")  && Main.debug) {
                         System.out.print("blue");
                 }
-                    else if (Objects.equals(nextline[3], "3")) {
+                    else if (Objects.equals(nextline[3], "3") && Main.debug) {
                         System.out.print("green");
                 }
-                    else if (Objects.equals(nextline[3], "4")) {
+                    else if (Objects.equals(nextline[3], "4") && Main.debug) {
                         System.out.print("yellow");
                 }
-                    else if (Objects.equals(nextline[3], "5")) {
+                    else if (Objects.equals(nextline[3], "5") && Main.debug) {
                         System.out.print("wild");
                 }
-                    else {
+                    else if (Main.debug) {
                         System.out.print("Card color error.");
                     }
             }
@@ -79,11 +88,11 @@ public class GameData {
             System.out.println(e);
         }
         System.out.println("\nFinished.");
-        return(id);
+        return(cid);
     };
 
     public static void playCard(Player player) { // test
-        if (debug) System.out.println("playCardTest");
+        if (Main.debug) System.out.println("playCardTest");
         System.out.println("Index of card to play:");
         player.displayHand(player.hand);
         System.out.print("Current Card: ");
@@ -114,46 +123,53 @@ public class GameData {
         if (GameData.testPlayable(cardID)) {
             if ((getCardInfo(cardID, 2) == 10 || getCardInfo(cardID, 2) == 11 || getCardInfo(cardID, 2) == 12 || getCardInfo(cardID, 2) == 13)) {
                 switch (getCardInfo(cardID, 2)) {
-                    default:
-                        System.out.println("Error indexing action card");
-                        break;
                     case 10:
-                        if (debug) System.out.println("+2");
+                        if (Main.debug) System.out.println("+2");
                         drawTwo = true;
                         break;
                     case 12:
-                        if (debug) System.out.println("Skip");
+                        if (Main.debug) System.out.println("Skip");
                         skip = true;
                         break;
                     case 13:
-                        if (debug) System.out.println("Reverse");
+                        if (Main.debug) System.out.println("Reverse");
                         reverse = !reverse;
                         turnDirection *= -1;
+                        break;
+                    default:
+                        System.out.println("Error indexing action card");
                         break;
                 }
             }
             else if (getCardInfo(cardID, 2) >= 50) {
-                if (debug) System.out.println("powerCard");
+                if (Main.debug) System.out.println("powerCard");
                 switch (getCardInfo(cardID, 2)) {
                     default:
                         System.out.println("Error indexing power card");
                         break;
                     case 51:
-                        if (debug) System.out.println("+4");
-                        powerCards.drawFour(cardID);
+                        if (Main.debug) System.out.println("+4");
+                        colorid = powerCards.drawFour(cardID);
+                        if (Main.debug) System.out.println("colorid = " + colorid);
                         break;
                     case 52:
-                        if (debug) System.out.println("Wild");
-                        powerCards.wild(cardID);
+                        if (Main.debug) System.out.println("Wild");
+                        colorid = powerCards.wild(cardID);
+                        if (Main.debug) System.out.println("colorid = " + colorid);
                         break;
                 }
             }
 
             // at the end, regardless of played card,
-            // add card to discard pile, remove from player hand
+            // add card to discard pile, remove from player hand, value
             // (remember, hand array is just card id, so only card id is selected & added)
+            value = getCardInfo(cardID, 2);
             GameData.discardPile.add(player.hand.get(selectionIndex)); // add to discard pile
             player.hand.remove(selectionIndex); // remove from player hand
+            // color value set independently, to account for wild
+            if (cardID < 50) {
+                colorid = getCardInfo(cardID, 3);
+            }
         }
         else {
             System.out.println("Invalid card.");
@@ -192,22 +208,20 @@ public class GameData {
             System.out.println(e);
         }
 
-        if (playColor == discardColor || playValue == discardValue || playColor == 5 || playID > 50) {
-            if (debug) System.out.println("True; testPlayable Finished.");
+        if (playColor == colorid || playValue == value || playColor == 5 || colorid == 5 || playID > 50) {
+            if (Main.debug) System.out.println("True; testPlayable Finished.");
             return(true);
         }
         else {
-            if (debug) System.out.println("False; testPlayable Finished.");
+            if (Main.debug) System.out.println("False; testPlayable Finished.");
             return(false);
         }
     }
 
     // Initialize discard pile
     public static Stack<Integer> discardInit() {
-        int randomIndex = generator.nextInt(deck.size()); // generate a random index from deck array
-        int card = deck.remove(randomIndex); // remove a number from arraylist and set it as card
-        discardPile.add(card); // add that index value to discard
-        if (debug) System.out.println("discardInit Finished" + discardPile);
+        discardPile.add(54); // add that index value to discard
+        if (Main.debug) System.out.println("discardInit Finished" + discardPile);
         return discardPile;
     }
 
@@ -218,7 +232,7 @@ public class GameData {
             deck.add(i);
         }
 
-        if (debug) System.out.println("deckInit finished." + deck);
+        if (Main.debug) System.out.println("deckInit finished." + deck);
         return deck;
     }
 
@@ -245,10 +259,17 @@ public class GameData {
 
         int turnCount = 0;
 
+        if (Main.debug) {
+            System.out.println(colorid);
+            System.out.println(value);
+            System.out.println(cid);
+        }
+
+
         // while true, the game runs
         while (gameEnabled) {
             turnValue = Math.floorMod(turnCount, 4);
-            if (debug) System.out.println("turnCount: " + turnCount + " | turnValue: " + turnValue);
+            if (Main.debug) System.out.println("turnCount: " + turnCount + " | turnValue: " + turnValue);
 
             if (turnValue == player1.turnValue) {
                 System.out.println("Player 1 turn:");
@@ -258,14 +279,15 @@ public class GameData {
                     drawFour = false;
                     playCard(player1);
                 }
-                if (drawTwo) {
+                else if (drawTwo) {
                     player1.drawCard(2);
                     drawTwo = false;
                     playCard(player1);
                 }
-                if (skip) {
+                else if (skip) {
                     skip = false;
-                } else playCard(player1);
+                }
+                else playCard(player1);
             }
             else if (turnValue == player2.turnValue) {
                 System.out.println("Player 2 turn:");
@@ -275,14 +297,15 @@ public class GameData {
                     drawFour = false;
                     playCard(player2);
                 }
-                if (drawTwo) {
+                else if (drawTwo) {
                     player2.drawCard(2);
                     drawTwo = false;
                     playCard(player2);
                 }
-                if (skip) {
+                else if (skip) {
                     skip = false;
-                } else playCard(player2);
+                }
+                else playCard(player2);
             }
             else if (turnValue == player3.turnValue) {
                 System.out.println("Player 3 turn:");
@@ -292,14 +315,15 @@ public class GameData {
                     drawFour = false;
                     playCard(player3);
                 }
-                if (drawTwo) {
+                else if (drawTwo) {
                     player3.drawCard(2);
                     drawTwo = false;
                     playCard(player3);
                 }
-                if (skip) {
+                else if (skip) {
                     skip = false;
-                } else playCard(player3);
+                }
+                else playCard(player3);
             }
             else if (turnValue == player4.turnValue) {
                 System.out.println("Player 4 turn:");
@@ -309,14 +333,15 @@ public class GameData {
                     drawFour = false;
                     playCard(player4);
                 }
-                if (drawTwo) {
+                else if (drawTwo) {
                     player4.drawCard(2);
                     drawTwo = false;
                     playCard(player4);
                 }
-                if (skip) {
+                else if (skip) {
                     skip = false;
-                } else playCard(player4);
+                }
+                else playCard(player4);
             }
             turnCount += turnDirection;
 
@@ -330,8 +355,6 @@ public class GameData {
     static int turnValue;
 
     public static void main(String[] args) {
-
-        debug = false;
         initGame(7, 52);
     }
 }
