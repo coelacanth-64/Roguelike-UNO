@@ -27,6 +27,7 @@ public class GameData {
 
     static int turnDirection = 1;
 
+    // check through all cards in player hand to check if playable, return boolean
     public static boolean checkHandPlayable(ArrayList<Integer> hand) {
         int unplayableCards = 0;
 
@@ -46,6 +47,7 @@ public class GameData {
         }
     }
 
+    //get all information on a card given its id & a column index
     public static int getCardInfo(int id, int index) {
         int value = 0;
 
@@ -65,6 +67,7 @@ public class GameData {
         return value;
     }
 
+    // print all card information given a card id
     public static int displayCard(int cardID) {
         try{
             CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
@@ -110,6 +113,8 @@ public class GameData {
         return(cid);
     };
 
+    // get player hand & prompt to play. check for oob/debug code/power card
+    // then, add card to pile and remove from hand.
     public static void playCard(Player player) { // test
         if (Main.debug) System.out.println("playCardTest");
         System.out.println("Index of card to play:");
@@ -197,6 +202,7 @@ public class GameData {
         }
     }
 
+    // check is a given card is playable by checking its values and comparing to discard
     public static boolean testPlayable(int cardID) {
 
         int playColor = 0, playValue = 0, discardValue = 0, discardColor = 0, playID = 0;
@@ -255,9 +261,11 @@ public class GameData {
         return deck;
     }
 
+    // setup deck, players, discard, turn systems. start the game
     public static void initGame(int handSize, int deckSize) {
         deckInit(deckSize);
 
+        // create new player, initialize hand, set turn value
         Player player1 = new Player();
         player1.handInit(handSize, deck);
         player1.turnValue = 0;
@@ -290,6 +298,8 @@ public class GameData {
             turnValue = Math.floorMod(turnCount, 4);
             if (Main.debug) System.out.println("turnCount: " + turnCount + " | turnValue: " + turnValue);
 
+            // if players turn, check if hand is playable, if not draw card and repeat.
+            // then, check for special card effects, if so, do required action, if none, play card
             if (turnValue == player1.turnValue) {
                 System.out.println("Player 1 turn:");
                 checkHandPlayable(player1.hand);
@@ -379,6 +389,7 @@ public class GameData {
             }
             turnCount += turnDirection;
 
+            //if a player hand is empty, end game
             if (player1.hand.isEmpty() || player2.hand.isEmpty() || player3.hand.isEmpty() ||player4.hand.isEmpty()) {
                 System.out.println("Winner decided! Congratulations!") ;
                 gameEnabled = false;

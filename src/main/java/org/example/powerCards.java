@@ -8,12 +8,14 @@ import java.util.Scanner;
 
 public class powerCards {
 
+    // return new card color
     public static int drawFour(int cardID) {
         if (Main.debug) System.out.println("powerCards +4");
         GameData.drawFour = true;
         return wild(cardID);
     }
 
+    //return new card color
     public static int wild(int cardID) {
         if (Main.debug) System.out.println("powerCards wild");
 
