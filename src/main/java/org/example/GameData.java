@@ -27,6 +27,25 @@ public class GameData {
 
     static int turnDirection = 1;
 
+    public static boolean checkHandPlayable(ArrayList<Integer> hand) {
+        int unplayableCards = 0;
+
+        for (int i = 0; i < hand.size(); i++) {
+            if (Main.debug) System.out.println("Checking card index" + i);
+            if (!testPlayable(hand.get(i))) {
+                unplayableCards++;
+            }
+        }
+        if (unplayableCards == hand.size()) {
+            if (Main.debug) System.out.println("Unplayable hand");
+            return false;
+        }
+        else {
+            if (Main.debug) System.out.println("Playable hand.");
+            return true;
+        }
+    }
+
     public static int getCardInfo(int id, int index) {
         int value = 0;
 
@@ -273,6 +292,10 @@ public class GameData {
 
             if (turnValue == player1.turnValue) {
                 System.out.println("Player 1 turn:");
+                checkHandPlayable(player1.hand);
+                while (!checkHandPlayable(player1.hand)) {
+                    player1.drawCard(1);
+                }
 
                 if (drawFour) {
                     player1.drawCard(4);
@@ -291,6 +314,9 @@ public class GameData {
             }
             else if (turnValue == player2.turnValue) {
                 System.out.println("Player 2 turn:");
+                while (!checkHandPlayable(player2.hand)) {
+                    player2.drawCard(1);
+                }
 
                 if (drawFour) {
                     player2.drawCard(4);
@@ -309,6 +335,10 @@ public class GameData {
             }
             else if (turnValue == player3.turnValue) {
                 System.out.println("Player 3 turn:");
+                checkHandPlayable(player3.hand);
+                while (!checkHandPlayable(player3.hand)) {
+                    player3.drawCard(1);
+                }
 
                 if (drawFour) {
                     player3.drawCard(4);
@@ -327,6 +357,10 @@ public class GameData {
             }
             else if (turnValue == player4.turnValue) {
                 System.out.println("Player 4 turn:");
+                checkHandPlayable(player4.hand);
+                while (!checkHandPlayable(player3.hand)) {
+                    player3.drawCard(1);
+                }
 
                 if (drawFour) {
                     player4.drawCard(4);
