@@ -1,56 +1,55 @@
-name,id,value,color,description,spid
-red A,0,1,1,,
-red 2,1,2,1,,
-red 3,2,3,1,,
-red 4,3,4,1,,
-red 5,4,5,1,,
-red 6,5,6,1,,
-red 7,6,7,1,,
-red 8,7,8,1,,
-red 9,8,9,1,,
-red Plus2,9,10,1,,
-red Skip,10,12,1,,
-red Reverse,11,13,1,,
-blue A,12,1,2,,
-blue 2,13,2,2,,
-blue 3,14,3,2,,
-blue 4,15,4,2,,
-blue 5,16,5,2,,
-blue 6,17,6,2,,
-blue 7,18,7,2,,
-blue 8,19,8,2,,
-blue 9,20,9,2,,
-blue Plus2,21,10,2,,
-blue Skip,22,12,2,,
-blue Reverse,23,13,2,,
-green A,24,1,3,,
-green 2,25,2,3,,
-green 3,26,3,3,,
-green 4,27,4,3,,
-green 5,28,5,3,,
-green 6,29,6,3,,
-green 7,30,7,3,,
-green 8,31,8,3,,
-green 9,32,9,3,,
-green Plus2,33,10,3,,
-green Skip,34,12,3,,
-green Reverse,35,13,3,,
-yellow A,36,1,4,,
-yellow 2,37,2,4,,
-yellow 3,38,3,4,,
-yellow 4,39,4,4,,
-yellow 5,40,5,4,,
-yellow 6,41,6,4,,
-yellow 7,42,7,4,,
-yellow 8,43,8,4,,
-yellow 9,44,9,4,,
-yellow Plus2,45,10,4,,
-yellow Skip,46,12,4,,
-yellow Reverse,47,13,4,,
-Plus 4,48,51,5,,
-Plus 4,49,51,5,,
-Plus 4,50,51,5,,
-Plus 4,51,51,5,,
-Wild,52,52,5,,
-Wild,53,52,5,,
-Empty Card,54,50,5,,
+name,id,value,color,description,imagePath
+red A,0,1,1,red A,horse.png
+red 2,1,2,1,red 2,horse.png
+red 3,2,3,1,red 3,horse.png
+red 4,3,4,1,red 4,horse.png
+red 5,4,5,1,red 5,horse.png
+red 6,5,6,1,red 6,horse.png
+red 7,6,7,1,red 7,horse.png
+red 8,7,8,1,red 8,horse.png
+red 9,8,9,1,red 9,horse.png
+red Plus2,9,10,1,red Plus2,horse.png
+red Skip,10,12,1,red Skip,horse.png
+red Reverse,11,13,1,red Reverse,horse.png
+blue A,12,1,2,blue A,horse.png
+blue 2,13,2,2,blue 2,horse.png
+blue 3,14,3,2,blue 3,horse.png
+blue 4,15,4,2,blue 4,horse.png
+blue 5,16,5,2,blue 5,horse.png
+blue 6,17,6,2,blue 6,horse.png
+blue 7,18,7,2,blue 7,horse.png
+blue 8,19,8,2,blue 8,horse.png
+blue 9,20,9,2,blue 9,horse.png
+blue Plus2,21,10,2,blue Plus2,horse.png
+blue Skip,22,12,2,blue Skip,horse.png
+blue Reverse,23,13,2,blue Reverse,horse.png
+green A,24,1,3,green A,horse.png
+green 2,25,2,3,green 2,horse.png
+green 3,26,3,3,green 3,horse.png
+green 4,27,4,3,green 4,horse.png
+green 5,28,5,3,green 5,horse.png
+green 6,29,6,3,green 6,horse.png
+green 7,30,7,3,green 7,horse.png
+green 8,31,8,3,green 8,horse.png
+green 9,32,9,3,green 9,horse.png
+green Plus2,33,10,3,green Plus2,horse.png
+green Skip,34,12,3,green Skip,horse.png
+green Reverse,35,13,3,green Reverse,horse.png
+yellow A,36,1,4,yellow A,horse.png
+yellow 2,37,2,4,yellow 2,horse.png
+yellow 3,38,3,4,yellow 3,horse.png
+yellow 4,39,4,4,yellow 4,horse.png
+yellow 5,40,5,4,yellow 5,horse.png
+yellow 6,41,6,4,yellow 6,horse.png
+yellow 7,42,7,4,yellow 7,horse.png
+yellow 8,43,8,4,yellow 8,horse.png
+yellow 9,44,9,4,yellow 9,horse.png
+yellow Plus2,45,10,4,yellow Plus2,horse.png
+yellow Skip,46,12,4,yellow Skip,horse.png
+yellow Reverse,47,13,4,yellow Reverse,horse.png
+Plus 4,48,51,5,Plus 4,horse.png
+Plus 4,49,51,5,Plus 4,horse.png
+Plus 4,50,51,5,Plus 4,horse.png
+Plus 4,51,51,5,Plus 4,horse.png
+Wild,52,52,5,Wild,horse.png
+Wild,53,52,5,Wild,horse.png
