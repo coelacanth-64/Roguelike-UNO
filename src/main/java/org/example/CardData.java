@@ -3,6 +3,12 @@ package org.example;
 import com.opencsv.*;
 import java.io.FileReader;
 
+/*
+    This class, similar to the Player class, is to make card interaction simpler, by reading through the cardData csv file
+    This allows for easier accessing of different properties of the cards without needing to check the csv every time
+    This class allows for storing of all of a card's information in one place
+*/
+
 public class CardData {
 
     public String name;
