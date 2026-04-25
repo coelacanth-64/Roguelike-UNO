@@ -3,6 +3,11 @@ package org.example;
 import java.util.List;
 import java.util.Scanner;
 
+/*
+    The purpose of this class is for testing the UNO game without implementing the necessary UI.
+    Any interface with the Console should be done through this class, not GameData
+*/
+
 public class Console implements ColorChooser {
     private final GameData GameData;
     private final Scanner scanner = new Scanner(System.in);
@@ -10,7 +15,7 @@ public class Console implements ColorChooser {
     public Console(GameData GameData) { this.GameData = GameData; }
 
     @Override
-    public int chooseColor(int playerIndex, int cardId) {
+    public int chooseColor(int playerIndex, int cardId) { // alternate chooseColor for the Console interface
         while (true) {
             System.out.println("Choose color: 1=Red 2=Blue 3=Green 4=Yellow");
             if (!scanner.hasNextInt()) { scanner.next(); continue; }

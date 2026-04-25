@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/*
+    This class, similar to the CardData class, allows for storing of all of a player's information in one place
+    Additionally, all interactions with player properties are handled here
+*/
+
 public class Player {
     int turnValue;
     ArrayList<Integer> hand = new ArrayList<>();
