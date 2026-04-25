@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.util.*;
 
 /*
-    This class is where all the back-end game data is stored. Do not use this class for console interaction
+    This class is where all the back-end game data & logic is stored. Do not use this class for console interaction
     This class is here to allow for simpler adding of new cards, as well as making UI easier to implement by using just the necessary values.
 */
 
@@ -27,10 +27,10 @@ public class GameData {
     private int cardID = 54;
 
     // flags for current game state
-    private boolean drawFour = false;
-    private boolean drawTwo = false;
-    private boolean skip = false;
-    private boolean reverse = false;
+    boolean drawFour = false;
+    boolean drawTwo = false;
+    boolean skip = false;
+    boolean reverse = false;
     private boolean gameEnabled = true;
     int turnDirection = 1;
 
@@ -43,9 +43,19 @@ public class GameData {
     // Initialize deck
     public void deckInit (int deckSize) {
         deck.clear();
-        for (int i = 0; i <= deckSize; i++) deck.add(i);
+        for (int i = 0; i < deckSize; i++) {
+            deck.add(i);
+        }
         Collections.shuffle(deck, generator); // make deck shuffled
-        if (Main.debug) System.out.println("deckInit Finished" + deck);
+        if (Main.debug) {
+            System.out.println("deckInit Finished" + deck);
+            System.out.println("deckInit: deck id=" + System.identityHashCode(deck) + " size=" + deck.size());
+            for (int i = 0; i < deck.size(); i++) {
+                if (deck.get(i) == null) {
+                    System.err.println("deckInit: NULL at index " + i);
+                }
+            }
+        }
     }
 
     // Initialize discard pile
@@ -63,6 +73,11 @@ public class GameData {
         deckInit(deckSize);
         discardInit();
         players.clear();
+
+        if (Main.debug) {
+            System.out.println("INIT deck size=" + deck.size() + " deck contents sample: " + (deck.size() > 10 ? deck.subList(0, 10) : deck));
+            System.out.println("INIT deck identity: " + System.identityHashCode(deck));
+        }
 
         for (int i = 0; i < numPlayers; i++) {
             Player p = new Player();
@@ -82,6 +97,10 @@ public class GameData {
     /* Query different values */
         public List<Player> getPlayers() {
             return Collections.unmodifiableList(players);
+        }
+
+        public List<Integer> getDeck() {
+            return deck;
         }
 
         public List<Integer> getPlayerHand(int playerIndex) {
@@ -158,13 +177,21 @@ public class GameData {
         }
 
         public List<Integer> drawCards(int playerIndex, int count) {
-            if (Main.debug) System.out.println("drawCards");
+            if (Main.debug) System.out.println("drawCards called: deck size before=" + deck.size() + " deckId=" + System.identityHashCode(deck));
             Player p = players.get(playerIndex);
 
             List<Integer> drawnCards = new ArrayList<>();
 
-            for (int i = 0; i < count && !deck.isEmpty(); i++)
-                drawnCards.add(deck.remove(deck.size() - 1)); // draw cards equal to count and remove last card from deck
+            for (int i = 0; i < count && !deck.isEmpty(); i++) {
+                Integer removed = deck.remove(deck.size() - 1);
+                System.out.println("  drawCards removed: " + removed + " (deckId=" + System.identityHashCode(deck) + ")");
+                if (removed == null) {
+                    System.err.println("  drawCards: removed NULL from deck! (playerIndex=" + playerIndex + ")");
+                    // do not add null to drawnCards; continue to next removal
+                    continue;
+                }
+                drawnCards.add(removed);
+            }
 
             p.hand.addAll(drawnCards);
 

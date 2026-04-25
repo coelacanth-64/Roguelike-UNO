@@ -43,7 +43,7 @@ public class CardData {
                             break;
                         case 4: color = "Yellow";
                             break;
-                        case 5: color = "None";
+                        case 5: color = "Wild";
                             break;
                         default: System.out.println("Unknown color");
                             break;

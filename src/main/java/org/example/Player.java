@@ -32,9 +32,20 @@ public class Player {
 
     public ArrayList<Integer> handInit(int handSize, ArrayList<Integer> deck) {
         hand.clear();
+
+        if (Main.debug) {
+            System.out.println("handInit called: deck identity=" + System.identityHashCode(deck) + " deck size=" + deck.size());
+        }
+
         for (int i = 0; i < handSize && !deck.isEmpty(); i++) {
             int randomIndex = generator.nextInt(deck.size()); // generate a random index from deck array
-            int card = deck.remove(randomIndex); // remove a number from arraylist and set it as card
+            Integer card = deck.remove(randomIndex); // remove a number from arraylist and set it as card
+            if (card == null) {
+                System.err.println("handInit: skipped null card from deck at index " + randomIndex);
+                i--; // try again to reach desired hand size
+                continue;
+            }
+
             hand.add(card); // add that index value to hand
         }
         if (Main.debug) System.out.println(hand + "\nhandInit finished.");

@@ -32,22 +32,51 @@ public class Console implements ColorChooser {
         // game loop
         while (GameData.isGameEnabled()) {
             int currentPlayer = GameData.turnIndex(turnCount);
-            if (!GameData.checkHandPlayable(currentPlayer)) {
-                System.out.println("Unplayable hand. Drawing until playable.");
-                while (!GameData.checkHandPlayable(currentPlayer)) {
-                    GameData.drawCards(currentPlayer, 1);
-                }
+
+            if (Main.debug) {
+                System.out.println("DEBUG (PRE ACTION CARD): Player " + (currentPlayer + 1) + " hand:");
+                GameData.getPlayers().get(currentPlayer).displayHandToConsole(GameData);
+                System.out.println("DEBUG (DECK): " + GameData.getDeck());
+                System.out.println("DEBUG (DECK SIZE): " + GameData.getDeckSize());
             }
 
+            if (GameData.drawTwo)
+                GameData.drawCards(currentPlayer, 2);
+            else if (GameData.drawFour)
+                GameData.drawCards(currentPlayer, 4);
+            else if (GameData.skip) {
+                System.out.println("Skipped player " + (currentPlayer + 1) + "'s turn.");
+                turnCount += GameData.turnDirection;
+                currentPlayer = GameData.turnIndex(turnCount);
+            }
+
+            if (Main.debug) {
+                System.out.println("DEBUG (POST ACTION CARD): Player " + (currentPlayer + 1) + " hand:");
+                GameData.getPlayers().get(currentPlayer).displayHandToConsole(GameData);
+            }
+
+            if (!GameData.checkHandPlayable(currentPlayer)) {
+            System.out.println("Unplayable hand. Drawing until playable.");
+            while (!GameData.checkHandPlayable(currentPlayer)) {
+                GameData.drawCards(currentPlayer, 1);
+                if (Main.debug) {
+                    System.out.println("DEBUG (PLAYABLEHANDCHECK): Player " + (currentPlayer + 1) + " hand:");
+                    GameData.getPlayers().get(currentPlayer).displayHandToConsole(GameData);
+                }
+            }
+        }
+
+            if (Main.debug) System.out.println("DEBUG: POST PLAYABLE HAND CHECK\nReverse State: " + GameData.reverse);
             System.out.println("Player " + (currentPlayer + 1) + " hand:");
             GameData.getPlayers().get(currentPlayer).displayHandToConsole(GameData);
 
-            System.out.print("Type index of card to play (1 - " + GameData.getPlayers().get(currentPlayer).hand.size() + ") or 777 to draw: ");
+            System.out.print("Type index of card to play (1 - " + GameData.getPlayers().get(currentPlayer).hand.size() + ")");
+            if (Main.debug) System.out.print(" or 777 to draw: ");
             if (!scanner.hasNextInt()) { scanner.next(); continue; }
             int selection = scanner.nextInt();
 
             // manual draw card
-            if (selection == 777) {
+            if (selection == 777 && Main.debug) {
                 List<Integer> drawn = GameData.drawCards(currentPlayer, 1);
                 System.out.println("Drew: " + drawn);
             } else {
