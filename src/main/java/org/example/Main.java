@@ -3,11 +3,12 @@ package org.example;
 import java.util.*;
 
 public class Main {
+    public static boolean debug = true;
 
-    static boolean debug;
-
-        public static void main (String[]args){
-            debug = true;
-            GameData.initGame(7, 52);
+    public static void main(String[] args) {
+        GameData game = new GameData();
+        Console console = new Console(game);
+        // handSize, deckSize, numPlayers
+        console.runConsoleGame(2, 52, 4);
         }
     }
