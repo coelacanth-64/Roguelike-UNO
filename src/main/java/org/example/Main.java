@@ -9,13 +9,14 @@ import java.util.*;
 
 public class Main {
     public static boolean debug = true;
-    public static int handSize = 7;
+    public static int handSize = 2;
     public static int deckSize = 54;
     public static int playerCount = 4;
 
     public static void main(String[] args) {
         GameData game = new GameData();
         Console console = new Console(game);
+
         console.runConsoleGame(handSize, deckSize, playerCount);
         }
     }
