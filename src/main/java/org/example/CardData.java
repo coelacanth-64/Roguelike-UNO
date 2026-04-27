@@ -1,0 +1,63 @@
+package org.example;
+
+import com.opencsv.*;
+import java.io.FileReader;
+
+/*
+    This class, similar to the Player class, is to make card interaction simpler, by reading through the cardData csv file
+    This allows for easier accessing of different properties of the cards without needing to check the csv every time
+    This class allows for storing of all of a card's information in one place
+*/
+
+public class CardData {
+
+    public String name;
+    public String id;
+    public String value;
+    public String color;
+    public int colorID;
+    public String description;
+    public String imagePath;
+
+    // Constructor that loads from CSV
+    public CardData(int cardID) {
+        loadFromCSV(cardID);
+    }
+
+    private void loadFromCSV(int cardID) {
+        try (CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
+                .withSkipLines(cardID + 1)
+                .build())
+            {
+                String[] nextline = reader.readNext();
+                if (nextline != null) {
+                    name = nextline[0];
+                    id = nextline[1];
+                    value = nextline[2];
+                    switch (colorID = Integer.parseInt(nextline[3])) {
+                        case 1: color = "Red";
+                            break;
+                        case 2: color = "Blue";
+                            break;
+                        case 3: color = "Green";
+                            break;
+                        case 4: color = "Yellow";
+                            break;
+                        case 5: color = "Wild";
+                            break;
+                        default: System.out.println("Unknown color");
+                            break;
+                }
+                description = nextline[4];
+                imagePath = nextline[5];
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading card: " + e);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return name + " (id=" + id + ", value=" + value + ", color=" + color + ")";
+    }
+}
