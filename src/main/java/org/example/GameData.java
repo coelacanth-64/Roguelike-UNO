@@ -23,8 +23,8 @@ public class GameData {
 
     // card variables
     private int colorID = 5;
-    private int value = 50;
-    private int cardID = 54;
+    private int value = 0;
+    private int cardID = 0;
 
     // flags for current game state
     boolean drawFour = false;
@@ -107,8 +107,11 @@ public class GameData {
             return Collections.unmodifiableList(players.get(playerIndex).hand);
         }
 
-        public Optional<Integer> getTopDiscard() {
-            return discardPile.isEmpty() ? Optional.empty() : Optional.of(discardPile.peek());
+        public int getTopDiscard() {
+            if (discardPile.peek() != null)
+                return discardPile.peek();
+            else
+                return -1;
         }
 
         public int getDeckSize() {
@@ -184,7 +187,8 @@ public class GameData {
 
             for (int i = 0; i < count && !deck.isEmpty(); i++) {
                 Integer removed = deck.remove(deck.size() - 1);
-                System.out.println("  drawCards removed: " + removed + " (deckId=" + System.identityHashCode(deck) + ")");
+                if (Main.debug)
+                    System.out.println("  drawCards removed: " + removed + " (deckId=" + System.identityHashCode(deck) + ")");
                 if (removed == null) {
                     System.err.println("  drawCards: removed NULL from deck! (playerIndex=" + playerIndex + ")");
                     // do not add null to drawnCards; continue to next removal
@@ -228,7 +232,27 @@ public class GameData {
          normal case: played card color == discard pile color  ||   played card value == discard pile value
          special case: played card color is special || discard pile color is special || played card is a power card (id > 50)
         */
-        return (playColor == colorID || playValue == value || playColor >= 5 || colorID >= 5 || playID > 50);
+        if (playColor == colorID) {
+            if (Main.debug) System.out.println("playColor == colorID");
+            return true;
+        }
+        if (playValue == value) {
+            if (Main.debug) System.out.println("playValue == value");
+            return true;
+        }
+        if (playColor >= 5) {
+            if (Main.debug) System.out.println("playColor >= 5");
+            return true;
+        }
+        if (colorID >= 5) {
+            if (Main.debug) System.out.println("colorID >= 5");
+            return true;
+        }
+        if (playID > 50) {
+            if (Main.debug) System.out.println("playID > 50");
+            return true;
+        }
+        return false;
     }
 
     public boolean checkHandPlayable(int playerIndex) {

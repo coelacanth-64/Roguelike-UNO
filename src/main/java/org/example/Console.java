@@ -19,8 +19,8 @@ public class Console implements ColorChooser {
         while (true) {
             System.out.println("Choose color: 1=Red 2=Blue 3=Green 4=Yellow");
             if (!scanner.hasNextInt()) { scanner.next(); continue; }
-            int sel = scanner.nextInt();
-            if (sel >= 1 && sel <= 4) return sel;
+            int select = scanner.nextInt();
+            if (select >= 1 && select <= 4) return select;
             System.out.println("Invalid selection.");
         }
     }
@@ -46,6 +46,7 @@ public class Console implements ColorChooser {
                 GameData.drawCards(currentPlayer, 4);
             else if (GameData.skip) {
                 System.out.println("Skipped player " + (currentPlayer + 1) + "'s turn.");
+                GameData.skip = false;
                 turnCount += GameData.turnDirection;
                 currentPlayer = GameData.turnIndex(turnCount);
             }
@@ -69,6 +70,7 @@ public class Console implements ColorChooser {
             if (Main.debug) System.out.println("DEBUG: POST PLAYABLE HAND CHECK\nReverse State: " + GameData.reverse);
             System.out.println("Player " + (currentPlayer + 1) + " hand:");
             GameData.getPlayers().get(currentPlayer).displayHandToConsole(GameData);
+            System.out.println("------------------------------------\nTop card: " + GameData.getCardData(GameData.getTopDiscard()));
 
             System.out.print("Type index of card to play (1 - " + GameData.getPlayers().get(currentPlayer).hand.size() + ")");
             if (Main.debug) System.out.print(" or 777 to draw: ");
@@ -82,7 +84,7 @@ public class Console implements ColorChooser {
             } else {
                 PlayResult result = GameData.playCard(currentPlayer, selection - 1, this);
                 if (!result.winner) System.out.println("Invalid play: " + result.message);
-                else System.out.println("Played card id: " + result.playedCardID);
+                    else System.out.println("Played card id: " + result.playedCardID);
                 if (result.playerWon) { System.out.println("Winner decided! Congratulations!"); break; }
             }
             turnCount += GameData.turnDirection;
