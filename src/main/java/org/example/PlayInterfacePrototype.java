@@ -31,10 +31,10 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         LocalPlayButton = new javax.swing.JButton();
         StoryModeButton = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        EasyMode = new javax.swing.JRadioButton();
+        HardMode = new javax.swing.JRadioButton();
         BackButton = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        playerCountSelector = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,15 +44,18 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
         StoryModeButton.setText("Play Story");
         StoryModeButton.addActionListener(this::StoryModeButtonActionPerformed);
 
-        jRadioButton1.setText("Easy");
+        EasyMode.setText("Easy");
+        EasyMode.addActionListener(this::EasyModeActionPerformed);
 
-        jRadioButton2.setText("Hard");
-        jRadioButton2.addActionListener(this::jRadioButton2ActionPerformed);
+        HardMode.setText("Hard");
+        HardMode.addActionListener(this::HardModeActionPerformed);
 
         BackButton.setText("Back");
         BackButton.addActionListener(this::BackButtonActionPerformed);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2 Players", "3 Players", "4 Players" }));
+        playerCountSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2 Players", "3 Players", "4 Players" }));
+        playerCountSelector.setSelectedItem(playerCountSelector);
+        playerCountSelector.addActionListener(this::playerCountSelectorActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -64,13 +67,13 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(LocalPlayButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(playerCountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(StoryModeButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(EasyMode, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(HardMode, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(BackButton))
                 .addContainerGap(148, Short.MAX_VALUE))
         );
@@ -80,12 +83,12 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
                 .addContainerGap(194, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LocalPlayButton)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(playerCountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(StoryModeButton)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(EasyMode)
+                    .addComponent(HardMode))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BackButton)
                 .addGap(13, 13, 13))
@@ -106,14 +109,32 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LocalPlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LocalPlayButtonActionPerformed
-        GameInterfacePrototype GameMenu = new GameInterfacePrototype();
-        GameMenu.setVisible(true);
-        dispose();
+            String value=(String)playerCountSelector.getSelectedItem(); 
+            System.out.println(value);
+            
+            if("2 Players".equals(value)){
+            GameInterfacePrototype GameMenu2 =new GameInterfacePrototype(2);
+            GameMenu2.setVisible(true);
+            this.dispose();
+            }
+            
+            else if("3 Players".equals(value)){ 
+            GameInterfacePrototype GameMenu3 =new GameInterfacePrototype(3);
+            GameMenu3.setVisible(true);
+            this.dispose();
+            }        
+            
+            else if("4 Players".equals(value)){  
+            GameInterfacePrototype GameMenu4 =new GameInterfacePrototype(4);
+            GameMenu4.setVisible(true);
+            this.dispose();
+            }        
     }//GEN-LAST:event_LocalPlayButtonActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+    private void HardModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HardModeActionPerformed
+            HardMode.setSelected(true);
+            EasyMode.setSelected(false);
+    }//GEN-LAST:event_HardModeActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
         MenuInterfacePrototype MainMenu = new MenuInterfacePrototype();
@@ -124,6 +145,16 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
     private void StoryModeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StoryModeButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_StoryModeButtonActionPerformed
+
+    
+    private void playerCountSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerCountSelectorActionPerformed
+           
+    }//GEN-LAST:event_playerCountSelectorActionPerformed
+
+    private void EasyModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EasyModeActionPerformed
+            HardMode.setSelected(false);
+            EasyMode.setSelected(true);
+    }//GEN-LAST:event_EasyModeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -136,7 +167,7 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Metal".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -148,15 +179,19 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new PlayInterfacePrototype().setVisible(true));
+        
+        
     }
 
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;
+    private javax.swing.JRadioButton EasyMode;
+    private javax.swing.JRadioButton HardMode;
     private javax.swing.JButton LocalPlayButton;
     private javax.swing.JButton StoryModeButton;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JComboBox<String> playerCountSelector;
     // End of variables declaration//GEN-END:variables
 }
