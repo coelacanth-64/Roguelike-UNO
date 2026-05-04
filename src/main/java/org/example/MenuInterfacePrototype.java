@@ -50,6 +50,7 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
         getContentPane().setLayout(new java.awt.CardLayout());
 
         SettingsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Settings.png"))); // NOI18N
+        SettingsButton.addActionListener(this::SettingsButtonActionPerformed);
 
         PlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Play.png"))); // NOI18N
         PlayButton.addActionListener(this::PlayButtonActionPerformed);
@@ -101,6 +102,12 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
         PlayMenu.setVisible(true);
         dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_PlayButtonActionPerformed
+
+    private void SettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsButtonActionPerformed
+        Settings settings = new Settings();
+        settings.setVisible(true);
+        dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_SettingsButtonActionPerformed
 
     /**
      * @param args the command line arguments
