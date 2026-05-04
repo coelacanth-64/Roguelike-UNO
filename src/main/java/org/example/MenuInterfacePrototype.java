@@ -44,6 +44,7 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
         PlayButton.addActionListener(this::PlayButtonActionPerformed);
 
         SettingsButton.setText("Settings");
+        SettingsButton.addActionListener(this::SettingsButtonActionPerformed);
 
         QuitButton.setText("Quit");
         QuitButton.addActionListener(this::QuitButtonActionPerformed);
@@ -94,6 +95,13 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
         PlayMenu.setVisible(true);
         dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_PlayButtonActionPerformed
+
+    private void SettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsButtonActionPerformed
+        // TODO add your handling code here:
+        Settings s = new Settings();
+        s.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_SettingsButtonActionPerformed
 
     /**
      * @param args the command line arguments
