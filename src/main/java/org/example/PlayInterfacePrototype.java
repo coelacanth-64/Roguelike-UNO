@@ -4,6 +4,8 @@
  */
 package org.example;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author ashto
@@ -17,6 +19,8 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
      */
     public PlayInterfacePrototype() {
         initComponents();
+        
+        scaledImageLabel1.setImage(new ImageIcon(getClass().getResource("/Uno_Logo.png")).getImage());
     }
 
     /**
@@ -28,58 +32,82 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanelBackground1 = new org.example.JPanelBackground();
         LocalPlayButton = new javax.swing.JButton();
         StoryModeButton = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        HardMode = new javax.swing.JRadioButton();
+        EasyMode = new javax.swing.JRadioButton();
         BackButton = new javax.swing.JButton();
+        playerCountSelector = new javax.swing.JComboBox<>();
+        scaledImageLabel1 = new org.example.ScaledImageLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        LocalPlayButton.setText("Play with Friends");
+        LocalPlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Play-With-Friends.png"))); // NOI18N
         LocalPlayButton.addActionListener(this::LocalPlayButtonActionPerformed);
 
-        StoryModeButton.setText("Play Story");
+        StoryModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Play-Story.png"))); // NOI18N
         StoryModeButton.addActionListener(this::StoryModeButtonActionPerformed);
 
-        jRadioButton1.setText("Easy");
+        HardMode.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        HardMode.setText("Hard");
+        HardMode.addActionListener(this::HardModeActionPerformed);
 
-        jRadioButton2.setText("Hard");
-        jRadioButton2.addActionListener(this::jRadioButton2ActionPerformed);
+        EasyMode.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        EasyMode.setText("Easy");
+        EasyMode.addActionListener(this::EasyModeActionPerformed);
 
-        BackButton.setText("Back");
+        BackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Back.png"))); // NOI18N
         BackButton.addActionListener(this::BackButtonActionPerformed);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        playerCountSelector.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        playerCountSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4 Players", "3 Players", "2 Players" }));
+        playerCountSelector.addActionListener(this::playerCountSelectorActionPerformed);
+
+        javax.swing.GroupLayout jPanelBackground1Layout = new javax.swing.GroupLayout(jPanelBackground1);
+        jPanelBackground1.setLayout(jPanelBackground1Layout);
+        jPanelBackground1Layout.setHorizontalGroup(
+            jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBackground1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LocalPlayButton)
-                    .addComponent(StoryModeButton)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelBackground1Layout.createSequentialGroup()
+                        .addComponent(LocalPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(playerCountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelBackground1Layout.createSequentialGroup()
+                        .addComponent(StoryModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(EasyMode, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(BackButton))
-                .addContainerGap(236, Short.MAX_VALUE))
+                        .addComponent(HardMode, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(90, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(scaledImageLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(161, Short.MAX_VALUE)
-                .addComponent(LocalPlayButton)
-                .addGap(18, 18, 18)
-                .addComponent(StoryModeButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BackButton)
+        jPanelBackground1Layout.setVerticalGroup(
+            jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scaledImageLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
+                        .addComponent(LocalPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
+                        .addComponent(playerCountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)))
+                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(EasyMode)
+                        .addComponent(HardMode))
+                    .addComponent(StoryModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13))
         );
 
@@ -87,23 +115,47 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelBackground1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelBackground1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void LocalPlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LocalPlayButtonActionPerformed
-        // TODO add your handling code here:
+            String value=(String)playerCountSelector.getSelectedItem(); 
+            System.out.println(value);
+            
+            if("2 Players".equals(value)){
+            LocalGameInterfacePrototype GameMenu2 =new LocalGameInterfacePrototype(2);
+            GameMenu2.setVisible(true);
+            this.dispose();
+            }
+            
+            else if("3 Players".equals(value)){ 
+            LocalGameInterfacePrototype GameMenu3 =new LocalGameInterfacePrototype(3);
+            GameMenu3.setVisible(true);
+            this.dispose();
+            }        
+            
+            else if("4 Players".equals(value)){  
+            LocalGameInterfacePrototype GameMenu4 =new LocalGameInterfacePrototype(4);
+            GameMenu4.setVisible(true);
+            this.dispose();
+            }        
     }//GEN-LAST:event_LocalPlayButtonActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+    private void HardModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HardModeActionPerformed
+            HardMode.setSelected(true);
+            EasyMode.setSelected(false);
+    }//GEN-LAST:event_HardModeActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
         MenuInterfacePrototype MainMenu = new MenuInterfacePrototype();
@@ -112,8 +164,20 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
     }//GEN-LAST:event_BackButtonActionPerformed
 
     private void StoryModeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StoryModeButtonActionPerformed
-        // TODO add your handling code here:
+        StoryGameInterfacePrototype StoryGameMenu =new StoryGameInterfacePrototype(2);
+        StoryGameMenu.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_StoryModeButtonActionPerformed
+
+    
+    private void playerCountSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerCountSelectorActionPerformed
+           
+    }//GEN-LAST:event_playerCountSelectorActionPerformed
+
+    private void EasyModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EasyModeActionPerformed
+            HardMode.setSelected(false);
+            EasyMode.setSelected(true);
+    }//GEN-LAST:event_EasyModeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,7 +190,7 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Metal".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -138,14 +202,20 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new PlayInterfacePrototype().setVisible(true));
+        
+        
     }
 
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;
+    private javax.swing.JRadioButton EasyMode;
+    private javax.swing.JRadioButton HardMode;
     private javax.swing.JButton LocalPlayButton;
     private javax.swing.JButton StoryModeButton;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private org.example.JPanelBackground jPanelBackground1;
+    private javax.swing.JComboBox<String> playerCountSelector;
+    private org.example.ScaledImageLabel scaledImageLabel1;
     // End of variables declaration//GEN-END:variables
 }
