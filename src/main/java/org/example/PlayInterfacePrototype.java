@@ -28,11 +28,11 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanelBackground1 = new org.example.JPanelBackground();
         LocalPlayButton = new javax.swing.JButton();
         StoryModeButton = new javax.swing.JButton();
-        EasyMode = new javax.swing.JRadioButton();
         HardMode = new javax.swing.JRadioButton();
+        EasyMode = new javax.swing.JRadioButton();
         BackButton = new javax.swing.JButton();
         playerCountSelector = new javax.swing.JComboBox<>();
 
@@ -44,11 +44,11 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
         StoryModeButton.setText("Play Story");
         StoryModeButton.addActionListener(this::StoryModeButtonActionPerformed);
 
-        EasyMode.setText("Easy");
-        EasyMode.addActionListener(this::EasyModeActionPerformed);
-
         HardMode.setText("Hard");
         HardMode.addActionListener(this::HardModeActionPerformed);
+
+        EasyMode.setText("Easy");
+        EasyMode.addActionListener(this::EasyModeActionPerformed);
 
         BackButton.setText("Back");
         BackButton.addActionListener(this::BackButtonActionPerformed);
@@ -57,18 +57,18 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
         playerCountSelector.setSelectedItem(playerCountSelector);
         playerCountSelector.addActionListener(this::playerCountSelectorActionPerformed);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelBackground1Layout = new javax.swing.GroupLayout(jPanelBackground1);
+        jPanelBackground1.setLayout(jPanelBackground1Layout);
+        jPanelBackground1Layout.setHorizontalGroup(
+            jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBackground1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelBackground1Layout.createSequentialGroup()
                         .addComponent(LocalPlayButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(playerCountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanelBackground1Layout.createSequentialGroup()
                         .addComponent(StoryModeButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(EasyMode, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -77,15 +77,15 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
                     .addComponent(BackButton))
                 .addContainerGap(148, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        jPanelBackground1Layout.setVerticalGroup(
+            jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
                 .addContainerGap(194, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LocalPlayButton)
                     .addComponent(playerCountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(StoryModeButton)
                     .addComponent(EasyMode)
                     .addComponent(HardMode))
@@ -98,11 +98,15 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelBackground1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelBackground1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -191,7 +195,7 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
     private javax.swing.JRadioButton HardMode;
     private javax.swing.JButton LocalPlayButton;
     private javax.swing.JButton StoryModeButton;
-    private javax.swing.JPanel jPanel1;
+    private org.example.JPanelBackground jPanelBackground1;
     private javax.swing.JComboBox<String> playerCountSelector;
     // End of variables declaration//GEN-END:variables
 }

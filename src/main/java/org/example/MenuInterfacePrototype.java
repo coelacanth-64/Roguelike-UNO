@@ -20,7 +20,6 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
      */
     public MenuInterfacePrototype() {
         initComponents();
-        setSize(1280,720);
     }
 
     /**
@@ -34,11 +33,10 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
 
         jButton4 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        PlayButton = new javax.swing.JButton();
+        jPanelBackground1 = new org.example.JPanelBackground();
         SettingsButton = new javax.swing.JButton();
+        PlayButton = new javax.swing.JButton();
         QuitButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         jButton4.setText("jButton4");
 
@@ -47,40 +45,30 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
 
+        SettingsButton.setText("Settings");
+
         PlayButton.setText("Play");
         PlayButton.addActionListener(this::PlayButtonActionPerformed);
-
-        SettingsButton.setText("Settings");
 
         QuitButton.setText("Quit");
         QuitButton.addActionListener(this::QuitButtonActionPerformed);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/UNO_Logo.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelBackground1Layout = new javax.swing.GroupLayout(jPanelBackground1);
+        jPanelBackground1.setLayout(jPanelBackground1Layout);
+        jPanelBackground1Layout.setHorizontalGroup(
+            jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBackground1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 236, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(QuitButton)
-                            .addComponent(SettingsButton)
-                            .addComponent(PlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SettingsButton)
+                    .addComponent(QuitButton))
+                .addContainerGap(305, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+        jPanelBackground1Layout.setVerticalGroup(
+            jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
+                .addContainerGap(191, Short.MAX_VALUE)
                 .addComponent(PlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(SettingsButton)
@@ -89,7 +77,7 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, "card2");
+        getContentPane().add(jPanelBackground1, "card3");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -125,8 +113,7 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
     private javax.swing.JButton QuitButton;
     private javax.swing.JButton SettingsButton;
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
+    private org.example.JPanelBackground jPanelBackground1;
     // End of variables declaration//GEN-END:variables
 }
