@@ -65,11 +65,17 @@ public class StoryGameInterfacePrototype extends javax.swing.JFrame {
         scaledImageLabel8 = new org.example.ScaledImageLabel();
         scaledImageLabel9 = new org.example.ScaledImageLabel();
         scaledImageLabel10 = new org.example.ScaledImageLabel();
+        p2CardDisplayText1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         p2CardDisplayText.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        p2CardDisplayText.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Red"));
         p2CardDisplayText.setText("Opponent Cards Remaining:");
+
+        p2CardDisplayText1.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        p2CardDisplayText1.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Red"));
+        p2CardDisplayText1.setText("Your Cards:");
 
         javax.swing.GroupLayout jPanelBackground1Layout = new javax.swing.GroupLayout(jPanelBackground1);
         jPanelBackground1.setLayout(jPanelBackground1Layout);
@@ -101,7 +107,8 @@ public class StoryGameInterfacePrototype extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(scaledImageLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(scaledImageLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(scaledImageLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(p2CardDisplayText1))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanelBackground1Layout.setVerticalGroup(
@@ -116,7 +123,9 @@ public class StoryGameInterfacePrototype extends javax.swing.JFrame {
                     .addComponent(scaledImageLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scaledImageLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scaledImageLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addComponent(p2CardDisplayText1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(scaledImageLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scaledImageLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -167,6 +176,7 @@ public class StoryGameInterfacePrototype extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.example.JPanelBackground jPanelBackground1;
     private javax.swing.JLabel p2CardDisplayText;
+    private javax.swing.JLabel p2CardDisplayText1;
     private org.example.ScaledImageLabel scaledImageLabel1;
     private org.example.ScaledImageLabel scaledImageLabel10;
     private org.example.ScaledImageLabel scaledImageLabel2;

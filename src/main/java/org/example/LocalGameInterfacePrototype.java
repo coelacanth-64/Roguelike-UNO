@@ -76,22 +76,34 @@ public class LocalGameInterfacePrototype extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        p3CardValue.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         p3CardValue.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        p3CardValue.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Red"));
         p3CardValue.setText("5");
 
+        p4CardDisplayText.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         p4CardDisplayText.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        p4CardDisplayText.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Red"));
         p4CardDisplayText.setText("Player 4 Cards Remaining:");
 
+        p3CardDisplayText.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         p3CardDisplayText.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        p3CardDisplayText.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Red"));
         p3CardDisplayText.setText("Player 3 Cards Remaining:");
 
+        p2CardDisplayText.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         p2CardDisplayText.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        p2CardDisplayText.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Red"));
         p2CardDisplayText.setText("Player 2 Cards Remaining:");
 
+        p4CardValue.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         p4CardValue.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        p4CardValue.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Red"));
         p4CardValue.setText("5");
 
+        p2CardValue.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         p2CardValue.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        p2CardValue.setForeground(javax.swing.UIManager.getDefaults().getColor("Actions.Red"));
         p2CardValue.setText("5");
 
         javax.swing.GroupLayout jPanelBackground1Layout = new javax.swing.GroupLayout(jPanelBackground1);

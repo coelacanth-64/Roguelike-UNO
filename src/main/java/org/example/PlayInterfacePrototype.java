@@ -4,6 +4,8 @@
  */
 package org.example;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author ashto
@@ -17,6 +19,8 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
      */
     public PlayInterfacePrototype() {
         initComponents();
+        
+        scaledImageLabel1.setImage(new ImageIcon(getClass().getResource("/Uno_Logo.png")).getImage());
     }
 
     /**
@@ -45,15 +49,18 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
         StoryModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Play-Story.png"))); // NOI18N
         StoryModeButton.addActionListener(this::StoryModeButtonActionPerformed);
 
+        HardMode.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         HardMode.setText("Hard");
         HardMode.addActionListener(this::HardModeActionPerformed);
 
+        EasyMode.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         EasyMode.setText("Easy");
         EasyMode.addActionListener(this::EasyModeActionPerformed);
 
         BackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Back.png"))); // NOI18N
         BackButton.addActionListener(this::BackButtonActionPerformed);
 
+        playerCountSelector.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         playerCountSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4 Players", "3 Players", "2 Players" }));
         playerCountSelector.addActionListener(this::playerCountSelectorActionPerformed);
 
@@ -75,7 +82,7 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
                         .addComponent(EasyMode, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(HardMode, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(scaledImageLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)

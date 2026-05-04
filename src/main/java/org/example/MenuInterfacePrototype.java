@@ -4,6 +4,7 @@
  */
 package org.example;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
@@ -20,6 +21,8 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
      */
     public MenuInterfacePrototype() {
         initComponents();
+        
+        scaledImageLabel1.setImage(new ImageIcon(getClass().getResource("/Uno_Logo.png")).getImage());
     }
 
     /**
@@ -104,7 +107,7 @@ public class MenuInterfacePrototype extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         try {
-            FlatLightLaf.setup();
+            FlatDarkLaf.setup();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
