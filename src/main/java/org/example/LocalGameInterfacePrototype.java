@@ -4,18 +4,21 @@
  */
 package org.example;
 
+import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author ashto
  */
-public class GameInterfacePrototype extends javax.swing.JFrame {
+public class LocalGameInterfacePrototype extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GameInterfacePrototype.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LocalGameInterfacePrototype.class.getName());
 
     /**
      * Creates new form GameInterfacePrototype
      */
-    public GameInterfacePrototype(int playerCount) {
+    public LocalGameInterfacePrototype(int playerCount) {
             initComponents();
         
             if (playerCount == 2) {
@@ -28,7 +31,26 @@ public class GameInterfacePrototype extends javax.swing.JFrame {
                 p4CardDisplayText.setVisible(false);
                 p4CardValue.setVisible(false);
         }
-    }
+            
+        SwingUtilities.invokeLater(() -> {
+        scaledImageLabel1.setImage(
+        new ImageIcon(getClass().getResource("/Uno_Cards-01.png")).getImage());
+                
+        scaledImageLabel2.setImage(
+        new ImageIcon(getClass().getResource("/Uno_Cards-02.png")).getImage());
+                
+        scaledImageLabel3.setImage(
+        new ImageIcon(getClass().getResource("/Uno_Cards-03.png")).getImage());
+                
+        scaledImageLabel4.setImage(
+        new ImageIcon(getClass().getResource("/Uno_Cards-04.png")).getImage());
+                
+        scaledImageLabel5.setImage(
+        new ImageIcon(getClass().getResource("/Uno_Cards-05.png")).getImage());
+            
+        });
+}
+                
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,41 +63,36 @@ public class GameInterfacePrototype extends javax.swing.JFrame {
 
         jPanelBackground1 = new org.example.JPanelBackground();
         p3CardValue = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         p4CardDisplayText = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         p3CardDisplayText = new javax.swing.JLabel();
         p2CardDisplayText = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         p4CardValue = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         p2CardValue = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        scaledImageLabel3 = new org.example.ScaledImageLabel();
+        scaledImageLabel2 = new org.example.ScaledImageLabel();
+        scaledImageLabel4 = new org.example.ScaledImageLabel();
+        scaledImageLabel1 = new org.example.ScaledImageLabel();
+        scaledImageLabel5 = new org.example.ScaledImageLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        p3CardValue.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         p3CardValue.setText("5");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cards/QueenDiamonds.png"))); // NOI18N
-
+        p4CardDisplayText.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         p4CardDisplayText.setText("Player 4 Cards Remaining:");
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cards/p4.png"))); // NOI18N
-
+        p3CardDisplayText.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         p3CardDisplayText.setText("Player 3 Cards Remaining:");
 
+        p2CardDisplayText.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         p2CardDisplayText.setText("Player 2 Cards Remaining:");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cards/4Spades.png"))); // NOI18N
-
+        p4CardValue.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         p4CardValue.setText("5");
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cards/10Hearts.png"))); // NOI18N
-
+        p2CardValue.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         p2CardValue.setText("5");
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cards/2Diamonds.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanelBackground1Layout = new javax.swing.GroupLayout(jPanelBackground1);
         jPanelBackground1.setLayout(jPanelBackground1Layout);
@@ -83,33 +100,28 @@ public class GameInterfacePrototype extends javax.swing.JFrame {
             jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBackground1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(p4CardDisplayText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(p3CardDisplayText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(p2CardDisplayText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanelBackground1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelBackground1Layout.createSequentialGroup()
+                        .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(p4CardDisplayText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(p3CardDisplayText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(p2CardDisplayText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelBackground1Layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(p2CardValue, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanelBackground1Layout.createSequentialGroup()
-                        .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(p2CardValue, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(p3CardValue, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(p4CardValue, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(p4CardValue, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanelBackground1Layout.createSequentialGroup()
+                        .addComponent(scaledImageLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scaledImageLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scaledImageLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scaledImageLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scaledImageLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 15, Short.MAX_VALUE))
         );
         jPanelBackground1Layout.setVerticalGroup(
             jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,34 +138,28 @@ public class GameInterfacePrototype extends javax.swing.JFrame {
                 .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(p4CardDisplayText)
                     .addComponent(p4CardValue))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                 .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
-                        .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addContainerGap())))
+                    .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(scaledImageLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(scaledImageLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(scaledImageLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(scaledImageLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(scaledImageLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanelBackground1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanelBackground1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanelBackground1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 1, Short.MAX_VALUE))
         );
 
         pack();
@@ -182,12 +188,6 @@ public class GameInterfacePrototype extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private org.example.JPanelBackground jPanelBackground1;
     private javax.swing.JLabel p2CardDisplayText;
     private javax.swing.JLabel p2CardValue;
@@ -195,5 +195,10 @@ public class GameInterfacePrototype extends javax.swing.JFrame {
     private javax.swing.JLabel p3CardValue;
     private javax.swing.JLabel p4CardDisplayText;
     private javax.swing.JLabel p4CardValue;
+    private org.example.ScaledImageLabel scaledImageLabel1;
+    private org.example.ScaledImageLabel scaledImageLabel2;
+    private org.example.ScaledImageLabel scaledImageLabel3;
+    private org.example.ScaledImageLabel scaledImageLabel4;
+    private org.example.ScaledImageLabel scaledImageLabel5;
     // End of variables declaration//GEN-END:variables
 }

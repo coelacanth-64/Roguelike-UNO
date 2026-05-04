@@ -35,13 +35,14 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
         EasyMode = new javax.swing.JRadioButton();
         BackButton = new javax.swing.JButton();
         playerCountSelector = new javax.swing.JComboBox<>();
+        scaledImageLabel1 = new org.example.ScaledImageLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        LocalPlayButton.setText("Play with Friends");
+        LocalPlayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Play-With-Friends.png"))); // NOI18N
         LocalPlayButton.addActionListener(this::LocalPlayButtonActionPerformed);
 
-        StoryModeButton.setText("Play Story");
+        StoryModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Play-Story.png"))); // NOI18N
         StoryModeButton.addActionListener(this::StoryModeButtonActionPerformed);
 
         HardMode.setText("Hard");
@@ -50,11 +51,10 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
         EasyMode.setText("Easy");
         EasyMode.addActionListener(this::EasyModeActionPerformed);
 
-        BackButton.setText("Back");
+        BackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Uno_Icons_Back.png"))); // NOI18N
         BackButton.addActionListener(this::BackButtonActionPerformed);
 
-        playerCountSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2 Players", "3 Players", "4 Players" }));
-        playerCountSelector.setSelectedItem(playerCountSelector);
+        playerCountSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4 Players", "3 Players", "2 Players" }));
         playerCountSelector.addActionListener(this::playerCountSelectorActionPerformed);
 
         javax.swing.GroupLayout jPanelBackground1Layout = new javax.swing.GroupLayout(jPanelBackground1);
@@ -64,33 +64,43 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
             .addGroup(jPanelBackground1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelBackground1Layout.createSequentialGroup()
-                        .addComponent(LocalPlayButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LocalPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(playerCountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelBackground1Layout.createSequentialGroup()
-                        .addComponent(StoryModeButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(StoryModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(EasyMode, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(HardMode, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(BackButton))
-                .addContainerGap(148, Short.MAX_VALUE))
+                        .addComponent(HardMode, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(98, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(scaledImageLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanelBackground1Layout.setVerticalGroup(
             jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
-                .addContainerGap(194, Short.MAX_VALUE)
-                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LocalPlayButton)
-                    .addComponent(playerCountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(StoryModeButton)
-                    .addComponent(EasyMode)
-                    .addComponent(HardMode))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BackButton)
+                .addContainerGap()
+                .addComponent(scaledImageLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
+                        .addComponent(LocalPlayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackground1Layout.createSequentialGroup()
+                        .addComponent(playerCountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)))
+                .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(EasyMode)
+                        .addComponent(HardMode))
+                    .addComponent(StoryModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13))
         );
 
@@ -117,19 +127,19 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
             System.out.println(value);
             
             if("2 Players".equals(value)){
-            GameInterfacePrototype GameMenu2 =new GameInterfacePrototype(2);
+            LocalGameInterfacePrototype GameMenu2 =new LocalGameInterfacePrototype(2);
             GameMenu2.setVisible(true);
             this.dispose();
             }
             
             else if("3 Players".equals(value)){ 
-            GameInterfacePrototype GameMenu3 =new GameInterfacePrototype(3);
+            LocalGameInterfacePrototype GameMenu3 =new LocalGameInterfacePrototype(3);
             GameMenu3.setVisible(true);
             this.dispose();
             }        
             
             else if("4 Players".equals(value)){  
-            GameInterfacePrototype GameMenu4 =new GameInterfacePrototype(4);
+            LocalGameInterfacePrototype GameMenu4 =new LocalGameInterfacePrototype(4);
             GameMenu4.setVisible(true);
             this.dispose();
             }        
@@ -147,7 +157,9 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
     }//GEN-LAST:event_BackButtonActionPerformed
 
     private void StoryModeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StoryModeButtonActionPerformed
-        // TODO add your handling code here:
+        StoryGameInterfacePrototype StoryGameMenu =new StoryGameInterfacePrototype(2);
+        StoryGameMenu.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_StoryModeButtonActionPerformed
 
     
@@ -197,5 +209,6 @@ public class PlayInterfacePrototype extends javax.swing.JFrame {
     private javax.swing.JButton StoryModeButton;
     private org.example.JPanelBackground jPanelBackground1;
     private javax.swing.JComboBox<String> playerCountSelector;
+    private org.example.ScaledImageLabel scaledImageLabel1;
     // End of variables declaration//GEN-END:variables
 }
