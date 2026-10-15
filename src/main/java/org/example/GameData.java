@@ -8,7 +8,8 @@ import java.util.*;
 
 /*
     This class is where all the back-end game data & logic is stored. Do not use this class for console interaction
-    This class is here to allow for simpler adding of new cards, as well as making UI easier to implement by using just the necessary values.
+    This class is here to allow for simpler adding of new cards, as well as making UI easier
+    to implement by using just the necessary values.
 */
 
 public class GameData {
