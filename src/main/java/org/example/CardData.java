@@ -1,5 +1,10 @@
 package org.example;
 
+/*
+    This s allows for easier accessing of different properties of the cards
+    and allows for storing of all of a card's information in one place
+*/
+
 public class CardData {
 
     public String name = "Unknown";
@@ -8,7 +13,7 @@ public class CardData {
     public String color = "Unknown";
     public int colorID = 0;
     public String description = "Unknown card";
-    public String imagePath = null; // now nullable; image paths removed from catalog
+    public String imagePath = null; // null for now, will need to add image filepaths for ui
 
     private static final String[][] CARD_CATALOG = new String[][] {
         {"red A", "0", "1", "1", "red A", null},
@@ -88,10 +93,6 @@ public class CardData {
         }
     }
 
-    /**
-     * bind maps a CSV row (or catalog row) into the instance fields.
-     * It parses colorID and sets the human-readable color name.
-     */
     private void bind(String[] row, int cardID) {
         name = row[0];
         id = row[1];
@@ -103,6 +104,7 @@ public class CardData {
         }
         color = colorName(colorID);
         description = row.length > 4 ? row[4] : "";
+
         // imagePath intentionally nullable; treat empty or missing as null
         imagePath = (row.length > 5 && row[5] != null && !row[5].isEmpty()) ? row[5] : null;
 

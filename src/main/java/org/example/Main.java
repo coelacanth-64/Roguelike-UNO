@@ -8,7 +8,7 @@ import java.util.*;
 */
 
 public class Main {
-    public static boolean debug = true;
+    public static boolean debug = false;
     public static int handSize = 2;
     public static int deckSize = 54;
     public static int playerCount = 4;
