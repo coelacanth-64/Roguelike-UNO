@@ -40,10 +40,14 @@ public class Console implements ColorChooser {
                 System.out.println("DEBUG (DECK SIZE): " + GameData.getDeckSize());
             }
 
-            if (GameData.drawTwo)
+            if (GameData.drawTwo) {
                 GameData.drawCards(currentPlayer, 2);
-            else if (GameData.drawFour)
+                GameData.drawTwo = false;
+            }
+            else if (GameData.drawFour) {
                 GameData.drawCards(currentPlayer, 4);
+                GameData.drawFour = false;
+            }
             else if (GameData.skip) {
                 System.out.println("Skipped player " + (currentPlayer + 1) + "'s turn.");
                 GameData.skip = false;
