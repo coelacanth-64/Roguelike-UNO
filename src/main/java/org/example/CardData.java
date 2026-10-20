@@ -1,7 +1,12 @@
 package org.example;
 
-import com.opencsv.*;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 
 /*
     This class, similar to the Player class, is to make card interaction simpler, by reading through the cardData csv file
@@ -25,34 +30,38 @@ public class CardData {
     }
 
     private void loadFromCSV(int cardID) {
-        try (CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/cardData.csv"))
-                .withSkipLines(cardID + 1)
-                .build())
-            {
-                String[] nextline = reader.readNext();
-                if (nextline != null) {
-                    name = nextline[0];
-                    id = nextline[1];
-                    value = nextline[2];
-                    switch (colorID = Integer.parseInt(nextline[3])) {
-                        case 1: color = "Red";
-                            break;
-                        case 2: color = "Blue";
-                            break;
-                        case 3: color = "Green";
-                            break;
-                        case 4: color = "Yellow";
-                            break;
-                        case 5: color = "Wild";
-                            break;
-                        default: System.out.println("Unknown color");
-                            break;
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("cardData.csv")) {
+            if (inputStream == null) {
+                throw new IllegalStateException("cardData.csv not found in jar/classpath");
+            }
+
+            try (Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+                 CSVReader csvReader = new CSVReaderBuilder(reader)
+                         .withSkipLines(cardID + 1)
+                         .build()) {
+
+                String[] nextLine = csvReader.readNext();
+
+                if (nextLine != null) {
+                    name = nextLine[0];
+                    id = nextLine[1];
+                    value = nextLine[2];
+
+                    switch (colorID = Integer.parseInt(nextLine[3])) {
+                        case 1 -> color = "Red";
+                        case 2 -> color = "Blue";
+                        case 3 -> color = "Green";
+                        case 4 -> color = "Yellow";
+                        case 5 -> color = "Wild";
+                        default -> System.out.println("Unknown color");
+                    }
+
+                    description = nextLine[4];
+                    imagePath = nextLine[5];
                 }
-                description = nextline[4];
-                imagePath = nextline[5];
             }
         } catch (Exception e) {
-            System.out.println("Error loading card: " + e);
+            e.printStackTrace();
         }
     }
 
