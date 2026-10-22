@@ -67,6 +67,6 @@ public class CardData {
 
     @Override
     public String toString() {
-        return name + " (id=" + id + ", value=" + value + ", color=" + color + ")";
+        return name + " (" + id + ": " + color + " " + value + ")";
     }
 }

@@ -13,7 +13,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
 
     private final GameData gameData;
     private final JPanel handPanel;
-    private final JLabel statusLabel;
+    private JLabel statusLabel;
     private int turnCount = 0;
     private int currentPlayer = 0;
     private final JLabel discardLabel;
@@ -23,40 +23,34 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         this.gameData = new GameData();
         this.gameData.initGame(Main.handSize, Main.deckSize, Main.playerCount);
 
-        backgroundImage = loadBackgroundImage("table_background.png");
+        backgroundImage = loadBackgroundImage("bg.png");
 
         setLayout(new BorderLayout(10, 10));
         setPreferredSize(new Dimension(1280, 720));
-        setBackground(new Color(25, 50, 30));
 
-        statusLabel = new JLabel("Player " + (currentPlayer + 1) +"'s turn", SwingConstants.CENTER);
+        JLabel statusLabel = new JLabel("Player " + (currentPlayer + 1) + "'s turn", SwingConstants.CENTER);
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         add(statusLabel, BorderLayout.NORTH);
 
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setOpaque(false);
+        JPanel root = new JPanel(new BorderLayout(10, 10));
+        root.setOpaque(false);
 
-        handPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
-        handPanel.setOpaque(false);
-        handPanel.setBackground(new Color(25, 50, 30));
-        handPanel.setBorder(BorderFactory.createEmptyBorder());
-        centerPanel.add(handPanel, BorderLayout.CENTER);
-
-
-
-        JPanel discardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel discardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 150));
         discardPanel.setOpaque(false);
-        discardPanel.setBorder(BorderFactory.createTitledBorder("Last Played Card"));
 
         discardLabel = new JLabel();
+        discardLabel.setForeground(Color.WHITE);
         discardPanel.add(discardLabel);
 
-        centerPanel.add(discardPanel, BorderLayout.SOUTH);
-        add(centerPanel, BorderLayout.CENTER);
+        handPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
+        handPanel.setOpaque(false);
+        handPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
 
-        add(handPanel, BorderLayout.CENTER);
-        add(discardPanel, BorderLayout.SOUTH);
+        root.add(discardPanel, BorderLayout.NORTH);
+        root.add(handPanel, BorderLayout.SOUTH);
+
+        add(root, BorderLayout.CENTER);
 
         refreshHand();
         updateDiscardDisplay();
@@ -127,11 +121,13 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             CardData card = gameData.getCardData(cardID);
 
             JButton cardButton = new JButton(loadCardIcon(card.imagePath));
-            cardButton.setPreferredSize(new Dimension(110, 150));
+            double scale = Math.max(0.45, 1.0 - (currentHand.size() - 7) * 0.08);
+            int cardW = (int) (110 * scale);
+            int cardH = (int) (150 * scale);
+            cardButton.setPreferredSize(new Dimension(cardW, cardH));
             cardButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
             cardButton.setFocusPainted(false);
             cardButton.setContentAreaFilled(false);
-            cardButton.setBorderPainted(false);
             cardButton.setBorderPainted(false);
             cardButton.setOpaque(false);
             cardButton.setBackground(new Color(255, 255, 255));
