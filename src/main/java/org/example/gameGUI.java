@@ -21,20 +21,20 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         this.gameData = new GameData();
         this.gameData.initGame(Main.handSize, Main.deckSize, Main.playerCount);
 
-        System.out.println("Current hand size: " + gameData.getPlayerHand(0).size());
-        this.setPreferredSize(new Dimension(1000, 700));
-        this.setBackground(new Color(25, 50, 30));
-        this.setDoubleBuffered(true);
-        this.setLayout(new BorderLayout(10, 10));
+        setPreferredSize(new Dimension(1000, 700));
+        setLayout(new BorderLayout(10, 10));
+        setBackground(new Color(25, 50, 30));
 
         statusLabel = new JLabel("Player " + (currentPlayer + 1) + "'s turn", SwingConstants.CENTER);
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-        this.add(statusLabel, BorderLayout.NORTH);
+        add(statusLabel, BorderLayout.NORTH);
 
         handPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
-        handPanel.setOpaque(false);
-        this.add(handPanel, BorderLayout.CENTER);
+        handPanel.setOpaque(true);
+        handPanel.setBackground(new Color(25, 50, 30));
+        handPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        add(handPanel, BorderLayout.CENTER);
 
         refreshHand();
     }
@@ -72,48 +72,27 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     private void refreshHand() {
         handPanel.removeAll();
 
-        if (gameData.getPlayers().isEmpty()) {
-            JLabel emptyLabel = new JLabel("No players in game.");
-            emptyLabel.setForeground(Color.WHITE);
-            handPanel.add(emptyLabel);
-            statusLabel.setText("No players");
-            handPanel.revalidate();
-            handPanel.repaint();
-            return;
-        }
-
         List<Integer> currentHand = gameData.getPlayerHand(currentPlayer);
 
         for (int i = 0; i < currentHand.size(); i++) {
             int cardID = currentHand.get(i);
-            CardData cardData = gameData.getCardData(cardID);
+            CardData card = gameData.getCardData(cardID);
 
-            JButton cardButton = new JButton(loadCardIcon(cardData.imagePath));
+            JButton cardButton = new JButton(loadCardIcon(card.imagePath));
             cardButton.setPreferredSize(new Dimension(110, 150));
-            cardButton.setBorder(BorderFactory.createEmptyBorder());
+            cardButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
             cardButton.setFocusPainted(false);
-            cardButton.setContentAreaFilled(false);
-            cardButton.setOpaque(false);
-            cardButton.setToolTipText(cardData.toString());
-            handPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-
-            if (Main.debug) {
-                JLabel debugLabel = new JLabel("Hand panel loaded");
-                debugLabel.setForeground(Color.WHITE);
-                handPanel.add(debugLabel);
-            }
-
-            if (!gameData.testPlayable(cardID)) {
-                cardButton.setEnabled(false);
-                cardButton.setToolTipText(cardData.toString() + " (not playable)");
-            }
+            cardButton.setContentAreaFilled(true);
+            cardButton.setOpaque(true);
+            cardButton.setBackground(new Color(255, 255, 255));
+            cardButton.setToolTipText(card.toString());
 
             final int cardIndex = i;
             cardButton.addActionListener(e -> handleCardClick(cardIndex));
+
             handPanel.add(cardButton);
         }
 
-        statusLabel.setText("Player " + (currentPlayer + 1) + "'s turn");
         handPanel.revalidate();
         handPanel.repaint();
     }
@@ -209,11 +188,8 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-
-        g2.setColor(new Color(25, 50, 30));
-        g2.fillRect(0, 0, getWidth(), getHeight());
-
-        g2.dispose();
+        // do not paint a full green rectangle over everything
+        // unless you want to hide child components
     }
 }
+
