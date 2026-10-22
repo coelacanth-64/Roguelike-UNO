@@ -16,27 +16,58 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     private final JLabel statusLabel;
     private int turnCount = 0;
     private int currentPlayer = 0;
+    private final JLabel discardLabel;
 
     public gameGUI() {
         this.gameData = new GameData();
         this.gameData.initGame(Main.handSize, Main.deckSize, Main.playerCount);
 
-        setPreferredSize(new Dimension(1000, 700));
         setLayout(new BorderLayout(10, 10));
+        setPreferredSize(new Dimension(1000, 700));
         setBackground(new Color(25, 50, 30));
 
-        statusLabel = new JLabel("Player " + (currentPlayer + 1) + "'s turn", SwingConstants.CENTER);
+        statusLabel = new JLabel("Player 1's turn", SwingConstants.CENTER);
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         add(statusLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setOpaque(false);
 
         handPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         handPanel.setOpaque(true);
         handPanel.setBackground(new Color(25, 50, 30));
         handPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-        add(handPanel, BorderLayout.CENTER);
+        centerPanel.add(handPanel, BorderLayout.CENTER);
+
+        JPanel discardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        discardPanel.setOpaque(false);
+        discardPanel.setBorder(BorderFactory.createTitledBorder("Last Played Card"));
+
+        discardLabel = new JLabel();
+        discardPanel.add(discardLabel);
+
+        centerPanel.add(discardPanel, BorderLayout.SOUTH);
+        add(centerPanel, BorderLayout.CENTER);
 
         refreshHand();
+        updateDiscardDisplay();
+    }
+
+    private void updateDiscardDisplay() {
+        int topCardId = gameData.getTopDiscard();
+
+        if (topCardId < 0) {
+            discardLabel.setIcon(null);
+            discardLabel.setText("No card yet");
+            return;
+        }
+
+        CardData topCard = gameData.getCardData(topCardId);
+        ImageIcon icon = loadCardIcon(topCard.imagePath);
+
+        discardLabel.setText("");
+        discardLabel.setIcon(icon);
     }
 
     public void startGame() {
@@ -104,11 +135,14 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         }
 
         PlayResult result = gameData.playCard(currentPlayer, cardIndex, this);
+
         if (!result.winner) {
             JOptionPane.showMessageDialog(this, result.message, "Invalid Play", JOptionPane.WARNING_MESSAGE);
             refreshHand();
             return;
         }
+
+        updateDiscardDisplay();
 
         if (result.playerWon) {
             statusLabel.setText("Player " + (currentPlayer + 1) + " wins!");
