@@ -19,6 +19,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     private final JLabel discardLabel;
     private Image backgroundImage;
 
+
     public gameGUI() {
         this.gameData = new GameData();
         this.gameData.initGame(Main.handSize, Main.deckSize, Main.playerCount);
@@ -28,7 +29,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         setLayout(new BorderLayout(10, 10));
         setPreferredSize(new Dimension(1280, 720));
 
-        JLabel statusLabel = new JLabel("Player " + (currentPlayer + 1) + "'s turn", SwingConstants.CENTER);
+        statusLabel = new JLabel("Player " + (currentPlayer + 1) + "'s Turn", SwingConstants.CENTER);
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         add(statusLabel, BorderLayout.NORTH);
@@ -39,7 +40,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         JPanel discardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 150));
         discardPanel.setOpaque(false);
 
-        discardLabel = new JLabel();
+        discardLabel = new JLabel("No card yet");
         discardLabel.setForeground(Color.WHITE);
         discardPanel.add(discardLabel);
 
@@ -118,7 +119,14 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
 
         for (int i = 0; i < currentHand.size(); i++) {
             int cardID = currentHand.get(i);
+
+            if (cardID > 100 || cardID < 0) {
+                continue;
+            }
+
             CardData card = gameData.getCardData(cardID);
+
+
 
             JButton cardButton = new JButton(loadCardIcon(card.imagePath));
             double scale = Math.max(0.45, 1.0 - (currentHand.size() - 7) * 0.08);
@@ -143,7 +151,26 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         handPanel.repaint();
     }
 
+    private void advanceTurn() {
+        turnCount += gameData.turnDirection;
+        currentPlayer = gameData.turnIndex(turnCount);
+        statusLabel.setText("Player " + (currentPlayer + 1) + "'s Turn");
+
+        ensurePlayableHand(); // This may cause a problem of a skipped player drawing cards
+        //refreshHand();
+    }
+
+    private void ensurePlayableHand() {
+        if (!gameData.checkHandPlayable(currentPlayer)) {
+            while (!gameData.checkHandPlayable(currentPlayer)) {
+                gameData.drawCards(currentPlayer, 1);
+            }
+            refreshHand();
+        }
+    }
+
     private void handleCardClick(int cardIndex) {
+
         if (!gameData.isGameEnabled()) {
             JOptionPane.showMessageDialog(this, "The game is over.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -181,17 +208,12 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
 
         if (gameData.skip) {
             gameData.skip = false;
-            turnCount += gameData.turnDirection;
-            currentPlayer = gameData.turnIndex(turnCount);
-            turnCount += gameData.turnDirection;
-            currentPlayer = gameData.turnIndex(turnCount);
-            refreshHand();
+            advanceTurn();
+            advanceTurn();
             return;
         }
 
-        turnCount += gameData.turnDirection;
-        currentPlayer = gameData.turnIndex(turnCount);
-        refreshHand();
+        advanceTurn();
     }
 
     private ImageIcon loadCardIcon(String imagePath) {

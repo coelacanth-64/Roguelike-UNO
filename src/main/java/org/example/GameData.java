@@ -25,7 +25,7 @@ public class GameData {
     private int colorID = 5;
     private int value = 0;
     private int cardID = 0;
-    private int cardsInDeck = 54; // update this when new cards are added, used for deckInit
+    // private int cardsInDeck = 54; // update this when new cards are added, used for deckInit
 
     // flags for current game state
     boolean drawFour = false;
@@ -44,13 +44,15 @@ public class GameData {
     // Initialize deck
     public void deckInit (int deckSize) {
         deck.clear();
-        int j = 0;
+        // int j = 0;
         for (int i = 0; i < deckSize; i++) {
-            deck.add(j);
+            deck.add(i);
+            /*
             j++;
             if (j > cardsInDeck) {
                 j = 0;
             }
+            */
         }
         Collections.shuffle(deck, generator); // make deck shuffled
         if (Main.debug) {
