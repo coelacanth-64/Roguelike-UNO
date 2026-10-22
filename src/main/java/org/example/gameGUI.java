@@ -17,16 +17,19 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     private int turnCount = 0;
     private int currentPlayer = 0;
     private final JLabel discardLabel;
+    private Image backgroundImage;
 
     public gameGUI() {
         this.gameData = new GameData();
         this.gameData.initGame(Main.handSize, Main.deckSize, Main.playerCount);
 
+        backgroundImage = loadBackgroundImage("table_background.png");
+
         setLayout(new BorderLayout(10, 10));
-        setPreferredSize(new Dimension(1000, 700));
+        setPreferredSize(new Dimension(1280, 720));
         setBackground(new Color(25, 50, 30));
 
-        statusLabel = new JLabel("Player 1's turn", SwingConstants.CENTER);
+        statusLabel = new JLabel("Player " + (currentPlayer + 1) +"'s turn", SwingConstants.CENTER);
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         add(statusLabel, BorderLayout.NORTH);
@@ -35,10 +38,12 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         centerPanel.setOpaque(false);
 
         handPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
-        handPanel.setOpaque(true);
+        handPanel.setOpaque(false);
         handPanel.setBackground(new Color(25, 50, 30));
-        handPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        handPanel.setBorder(BorderFactory.createEmptyBorder());
         centerPanel.add(handPanel, BorderLayout.CENTER);
+
+
 
         JPanel discardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         discardPanel.setOpaque(false);
@@ -50,8 +55,20 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         centerPanel.add(discardPanel, BorderLayout.SOUTH);
         add(centerPanel, BorderLayout.CENTER);
 
+        add(handPanel, BorderLayout.CENTER);
+        add(discardPanel, BorderLayout.SOUTH);
+
         refreshHand();
         updateDiscardDisplay();
+    }
+
+    private Image loadBackgroundImage(String fileName) {
+        try {
+            return new ImageIcon(getClass().getClassLoader().getResource("bg.png")).getImage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void updateDiscardDisplay() {
@@ -113,8 +130,10 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             cardButton.setPreferredSize(new Dimension(110, 150));
             cardButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
             cardButton.setFocusPainted(false);
-            cardButton.setContentAreaFilled(true);
-            cardButton.setOpaque(true);
+            cardButton.setContentAreaFilled(false);
+            cardButton.setBorderPainted(false);
+            cardButton.setBorderPainted(false);
+            cardButton.setOpaque(false);
             cardButton.setBackground(new Color(255, 255, 255));
             cardButton.setToolTipText(card.toString());
 
@@ -180,7 +199,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     }
 
     private ImageIcon loadCardIcon(String imagePath) {
-        String resourcePath = (imagePath == null || imagePath.isBlank()) ? "horse.png" : imagePath;
+        String resourcePath = (imagePath == null || imagePath.isBlank()) ? "b2fv.png" : imagePath;
         URL imageURL = getClass().getClassLoader().getResource(resourcePath);
 
         if (imageURL == null) {
@@ -222,8 +241,11 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // do not paint a full green rectangle over everything
-        // unless you want to hide child components
+
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+
     }
 }
 

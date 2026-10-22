@@ -11,7 +11,7 @@ import javax.swing.*;
 public class Main {
     public static boolean debug = false;
     public static int handSize = 7;
-    public static int deckSize = 54;
+    public static int deckSize = 54*2;
     public static int playerCount = 4;
 
     public static void main(String[] args) {
