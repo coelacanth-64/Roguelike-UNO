@@ -21,6 +21,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         this.gameData = new GameData();
         this.gameData.initGame(Main.handSize, Main.deckSize, Main.playerCount);
 
+        System.out.println("Current hand size: " + gameData.getPlayerHand(0).size());
         this.setPreferredSize(new Dimension(1000, 700));
         this.setBackground(new Color(25, 50, 30));
         this.setDoubleBuffered(true);
@@ -94,6 +95,13 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             cardButton.setContentAreaFilled(false);
             cardButton.setOpaque(false);
             cardButton.setToolTipText(cardData.toString());
+            handPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
+            if (Main.debug) {
+                JLabel debugLabel = new JLabel("Hand panel loaded");
+                debugLabel.setForeground(Color.WHITE);
+                handPanel.add(debugLabel);
+            }
 
             if (!gameData.testPlayable(cardID)) {
                 cardButton.setEnabled(false);
@@ -163,7 +171,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         URL imageURL = getClass().getClassLoader().getResource(resourcePath);
 
         if (imageURL == null) {
-            Image placeholder = new BufferedImage(110, 150, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage placeholder = new BufferedImage(110, 150, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = placeholder.createGraphics();
             g2.setColor(new Color(32, 32, 32));
             g2.fillRect(0, 0, 110, 150);
