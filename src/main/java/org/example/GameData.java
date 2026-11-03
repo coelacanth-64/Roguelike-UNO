@@ -22,11 +22,10 @@ public class GameData {
     // get CardData from a cardID
     private final Map<Integer, CardData> cardCache = new HashMap<>();
 
-    // card variables
+    // Active color chosen for the current turn (particularly important after a wild).
     private int colorID = 5;
     private int value = 0;
     private int cardID = 0;
-    // private int cardsInDeck = 54; // update this when new cards are added, used for deckInit
 
     // flags for current game state
     boolean drawFour = false;
@@ -45,15 +44,8 @@ public class GameData {
     // Initialize deck
     public void deckInit (int deckSize) {
         deck.clear();
-        // int j = 0;
         for (int i = 0; i < deckSize; i++) {
             deck.add(i);
-            /*
-            j++;
-            if (j > cardsInDeck) {
-                j = 0;
-            }
-            */
         }
         Collections.shuffle(deck, generator); // make deck shuffled
         if (Main.debug) {
@@ -71,7 +63,8 @@ public class GameData {
     public void discardInit() {
         discardPile.clear();
         discardPile.push(54); // add that index value to discard
-        if (Main.debug) System.out.println("discardInit Finished" + discardPile);
+        colorID = 5;
+        value = 0;
     }
 
     /* Initialize game state */
@@ -82,6 +75,12 @@ public class GameData {
         deckInit(deckSize);
         discardInit();
         players.clear();
+        gameEnabled = true;
+        turnDirection = 1;
+        drawFour = false;
+        drawTwo = false;
+        skip = false;
+        reverse = false;
 
         if (Main.debug) {
             System.out.println("INIT deck size=" + deck.size() + " deck contents sample: " + (deck.size() > 10 ? deck.subList(0, 10) : deck));
@@ -95,7 +94,6 @@ public class GameData {
             players.add(p);
         }
 
-
         if (Main.debug) {
             System.out.println(colorID);
             System.out.println(value);
@@ -104,143 +102,139 @@ public class GameData {
     }
 
     // return different values
-        public List<Player> getPlayers() {
-            return Collections.unmodifiableList(players);
-        }
+    public List<Player> getPlayers() {
+        return Collections.unmodifiableList(players);
+    }
 
-        public List<Integer> getDeck() {
-            return deck;
-        }
+    public List<Integer> getDeck() {
+        return deck;
+    }
 
-        public List<Integer> getPlayerHand(int playerIndex) {
-            return Collections.unmodifiableList(players.get(playerIndex).hand);
-        }
+    public List<Integer> getPlayerHand(int playerIndex) {
+        return Collections.unmodifiableList(players.get(playerIndex).hand);
+    }
 
-        public int getTopDiscard() {
-            if (discardPile.peek() != null)
-                return discardPile.peek();
-            else
-                return -1;
-        }
+    public int getTopDiscard() {
+        if (discardPile.peek() != null)
+            return discardPile.peek();
+        else
+            return -1;
+    }
 
-        public int getDeckSize() {
-            return deck.size();
-        }
+    public int getDeckSize() {
+        return deck.size();
+    }
 
-        public boolean isGameEnabled() {
-            return gameEnabled;
-        }
+    public boolean isGameEnabled() {
+        return gameEnabled;
+    }
 
-        // Game logic and actions
-        public PlayResult playCard(int playerIndex, int cardIndex, ColorChooser chooser) {
-            if (Main.debug) System.out.println("playCard");
-            Player p = players.get(playerIndex);
-            if (cardIndex < 0 || cardIndex >= p.hand.size()) return PlayResult.invalid("Index out of range");
-            int cardID = p.hand.get(cardIndex);
-            if (!testPlayable(cardID)) return PlayResult.invalid("Card not playable");
+    // Game logic and actions
+    public PlayResult playCard(int playerIndex, int cardIndex, ColorChooser chooser) {
+        if (Main.debug) System.out.println("playCard");
+        if (playerIndex < 0 || playerIndex >= players.size()) return PlayResult.invalid("Invalid player");
+        Player p = players.get(playerIndex);
+        if (cardIndex < 0 || cardIndex >= p.hand.size()) return PlayResult.invalid("Index out of range");
+        int playedCardID = p.hand.get(cardIndex);
+        // Always enforce the same rule here, regardless of which UI/console path invokes playCard.
+        if (!testPlayable(playedCardID)) return PlayResult.invalid("Card not playable");
 
-            int cardValue = getCardInfo(cardID, 2);
+        int cardValue = getCardInfo(playedCardID, 2);
 
-            // this is where cards with special effects go that aren't necessarily powercards
-            // (this is kind of redundant and can change if we want)
-            if (cardValue >= 10 && cardValue <= 13) {
-                switch (cardValue) {
-                    case 10: // id 10 = +2
-                        if (Main.debug) System.out.println("+2");
-                        drawTwo = true;
-                        break;
-                    case 12: // id 12 = skip
-                        if (Main.debug) System.out.println("Skip");
-                        skip = true;
-                        break;
-                    case 13: // id 13 = reverse
-                        if (Main.debug) System.out.println("Reverse");
-                        reverse = !reverse;
-                        turnDirection *= -1;
-                        break;
-                    default:
-                        System.out.println("Error indexing action card");
-                        break;
-                }
-
-                // if the id is 50+ the card is a power card and has special effects
-            } else if (cardValue >= 50) {
-                if (Main.debug) System.out.println("powerCard");
-                switch (getCardInfo(cardID, 2)) {
-                    default:
-                        System.out.println("Error indexing power card");
-                        break;
-                    case 51: // id 51 = +4
-                        if (Main.debug) System.out.println("+4");
-                        drawFour = true;
-                        colorID = chooser.chooseColor(playerIndex, cardID);
-                        if (Main.debug) System.out.println("colorid = " + colorID);
-                        break;
-                    case 52: // id 52 = wild card
-                        if (Main.debug) System.out.println("Wild");
-                        colorID = chooser.chooseColor(playerIndex, cardID);
-                        if (Main.debug) System.out.println("colorid = " + colorID);
-                        break;
-                }
-            }
-
-            discardPile.push(p.hand.remove(cardIndex)); // add played card to discard pile
-            if (cardID < 50) colorID = getCardInfo(cardID, 3); // get color to played card color
-
-            boolean playerWon = p.hand.isEmpty();
-            if (playerWon) gameEnabled = false;
-            return PlayResult.winner(cardID, playerWon);
-        }
-
-        /**
-         * Recycles the discard pile into the draw deck, leaving its top card in place.
-         * Returns false if there are no discard cards available to recycle.
-         */
-        private boolean refillDeckFromDiscard() {
-            if (discardPile.size() <= 1) {
-                return false;
-            }
-
-            Integer topCard = discardPile.pop();
-            while (!discardPile.isEmpty()) {
-                deck.add(discardPile.pop());
-            }
-            discardPile.push(topCard);
-            Collections.shuffle(deck, generator);
-
-            if (Main.debug) {
-                System.out.println("Refilled deck from discard pile; deck size=" + deck.size());
-            }
-            return !deck.isEmpty();
-        }
-
-        public List<Integer> drawCards(int playerIndex, int count) {
-            if (Main.debug) System.out.println("drawCards called: deck size before=" + deck.size() + " deckId=" + System.identityHashCode(deck));
-            Player p = players.get(playerIndex);
-
-            List<Integer> drawnCards = new ArrayList<>();
-
-            for (int i = 0; i < count; i++) {
-                // Refill on demand, including when a multi-card draw would exhaust
-                // the deck partway through (for example, a +2 or +4 effect).
-                if (deck.isEmpty() && !refillDeckFromDiscard()) {
+        // this is where cards with special effects go that aren't necessarily powercards
+        if (cardValue >= 10 && cardValue <= 13) {
+            switch (cardValue) {
+                case 10: // id 10 = +2
+                    if (Main.debug) System.out.println("+2");
+                    drawTwo = true;
                     break;
-                }
+                case 12: // id 12 = skip
+                    if (Main.debug) System.out.println("Skip");
+                    skip = true;
+                    break;
+                case 13: // id 13 = reverse
+                    if (Main.debug) System.out.println("Reverse");
+                    reverse = !reverse;
+                    turnDirection *= -1;
+                    break;
+                default:
+                    System.out.println("Error indexing action card");
+                    break;
+            }
+        } else if (isWildOrPlusFour(playedCardID)) {
+            if (cardValue == 51) {
+                if (Main.debug) System.out.println("+4");
+                drawFour = true;
+            } else if (Main.debug) {
+                System.out.println("Wild");
+            }
+            int chosenColor = chooser == null ? 1 : chooser.chooseColor(playerIndex, playedCardID);
+            colorID = (chosenColor >= 1 && chosenColor <= 4) ? chosenColor : 1;
+            if (Main.debug) System.out.println("colorid = " + colorID);
+        }
 
-                Integer removed = deck.remove(deck.size() - 1);
-                if (Main.debug)
-                    System.out.println("  drawCards removed: " + removed + " (deckId=" + System.identityHashCode(deck) + ")");
-                if (removed == null) {
-                    System.err.println("  drawCards: removed NULL from deck! (playerIndex=" + playerIndex + ")");
-                    continue;
-                }
-                drawnCards.add(removed);
+        discardPile.push(p.hand.remove(cardIndex));
+        if (!isWildOrPlusFour(playedCardID)) {
+            colorID = getCardInfo(playedCardID, 3);
+        }
+        value = cardValue;
+
+        boolean playerWon = p.hand.isEmpty();
+        if (playerWon) gameEnabled = false;
+        return PlayResult.winner(playedCardID, playerWon);
+    }
+
+    /**
+     * Recycles the discard pile into the draw deck, leaving its top card in place.
+     * Returns false if there are no discard cards available to recycle.
+     */
+    private boolean refillDeckFromDiscard() {
+        if (discardPile.size() <= 1) {
+            return false;
+        }
+
+        Integer topCard = discardPile.pop();
+        while (!discardPile.isEmpty()) {
+            deck.add(discardPile.pop());
+        }
+        discardPile.push(topCard);
+        Collections.shuffle(deck, generator);
+
+        if (Main.debug) {
+            System.out.println("Refilled deck from discard pile; deck size=" + deck.size());
+        }
+        return !deck.isEmpty();
+    }
+
+    public List<Integer> drawCards(int playerIndex, int count) {
+        if (playerIndex < 0 || playerIndex >= players.size() || count <= 0) {
+            return Collections.emptyList();
+        }
+        if (Main.debug) System.out.println("drawCards called: deck size before=" + deck.size() + " deckId=" + System.identityHashCode(deck));
+        Player p = players.get(playerIndex);
+
+        List<Integer> drawnCards = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            // Refill on demand, including when a multi-card draw would exhaust
+            // the deck partway through (for example, a +2 or +4 effect).
+            if (deck.isEmpty() && !refillDeckFromDiscard()) {
+                break;
             }
 
-            p.hand.addAll(drawnCards);
-
-            return drawnCards;
+            Integer removed = deck.remove(deck.size() - 1);
+            if (Main.debug)
+                System.out.println("  drawCards removed: " + removed + " (deckId=" + System.identityHashCode(deck) + ")");
+            if (removed == null) {
+                System.err.println("  drawCards: removed NULL from deck! (playerIndex=" + playerIndex + ")");
+                continue;
+            }
+            drawnCards.add(removed);
         }
+
+        p.hand.addAll(drawnCards);
+        return drawnCards;
+    }
 
     public int getCardInfo(int id, int index) {
         CardData cd = getCardData(id);
@@ -256,79 +250,58 @@ public class GameData {
         }
     }
 
-    public boolean testPlayable(int cardID) {
+    private boolean isWildOrPlusFour(int cardID) {
+        int cardValue = getCardInfo(cardID, 2);
+        return cardValue == 51 || cardValue == 52;
+    }
 
-        // first card always playable
-        if (discardPile.isEmpty())
+    public boolean testPlayable(int cardID) {
+        if (cardID < 0) return false;
+        if (isWildOrPlusFour(cardID)) {
             return true;
+        }
+
+        if (discardPile.isEmpty()) {
+            return true;
+        }
+
+        int topCardID = discardPile.peek();
+        // 54 is the game's initial blank discard placeholder, before any card has been played.
+        if (topCardID == 54) {
+            return true;
+        }
 
         CardData play = getCardData(cardID);
-        CardData discard = getCardData(discardPile.peek());
-        int playColor = play.colorID; // played card color
-        int playValue = Integer.parseInt(play.value); // played card value
-        int playID = Integer.parseInt(play.id); // played card ID (for power cards)
+        CardData topDiscard = getCardData(topCardID);
 
-        /* check playable based on conditions:
-         normal case: played card color == discard pile color  ||   played card value == discard pile value
-         special case: played card color is special || discard pile color is special || played card is a power card (id > 50)
-        */
-        if (playColor == colorID) {
-            if (Main.debug) System.out.println("playColor == colorID");
-            return true;
+        // After a wild, the chosen color is the only matching condition for
+        // ordinary cards; matching the wild's printed value is not permitted.
+        if (isWildOrPlusFour(topCardID)) {
+            return play.colorID == colorID;
         }
-        if (playValue == value) {
-            if (Main.debug) System.out.println("playValue == value");
-            return true;
+
+        int playValue = getCardInfo(cardID, 2);
+        int topDiscardValue = getCardInfo(topCardID, 2);
+        return play.colorID == topDiscard.colorID || playValue == topDiscardValue;
+    }
+
+    public boolean checkHandPlayable(int playerIndex) {
+        if (players.isEmpty() || playerIndex < 0 || playerIndex >= players.size()) {
+            return false;
         }
-        if (playColor >= 5) {
-            if (Main.debug) System.out.println("playColor >= 5");
-            return true;
-        }
-        if (colorID >= 5) {
-            if (Main.debug) System.out.println("colorID >= 5");
-            return true;
-        }
-        if (playID > 50) {
-            if (Main.debug) System.out.println("playID > 50");
-            return true;
+
+        Player player = players.get(playerIndex);
+        for (int cardID : player.hand) {
+            if (testPlayable(cardID)) {
+                return true;
+            }
         }
         return false;
     }
 
-    public boolean checkHandPlayable(int playerIndex) {
-       int unplayableCards = 0;
-
-       if (players.isEmpty()) // if no players: false
-           return false;
-
-       Player p = players.get(playerIndex);
-
-       if (p.hand.isEmpty()) // if player hand empty: false
-           return false;
-
-       if (discardPile.isEmpty()) // first card is playable always
-           return true;
-
-        for (int i = 0; i < p.hand.size(); i++) {
-           if (Main.debug) System.out.println("Checking card index" + i);
-           if (!testPlayable(p.hand.get(i))) {
-               unplayableCards++;
-           }
-       }
-        if (unplayableCards == p.hand.size()) {
-            if (Main.debug) System.out.println("Unplayable hand");
-            return false;
-        }
-        else {
-            if (Main.debug) System.out.println("Playable hand.");
-            return true;
-        }
+    public int turnIndex(int turnCount) {
+        if (players.isEmpty())
+            return -1;
+        return Math.floorMod(turnCount, players.size());
     }
-
-        public int turnIndex(int turnCount) {
-            if (players.isEmpty())
-                return -1; // if no players, error
-            else
-                return Math.floorMod(turnCount, players.size()); // else, return the turnIndex (range: 1 -> player count)
-        }
-    }
+}
