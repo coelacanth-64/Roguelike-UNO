@@ -8,7 +8,8 @@ import java.util.*;
 
 /*
     This class is where all the back-end game data & logic is stored. Do not use this class for console interaction
-    This class is here to allow for simpler adding of new cards, as well as making UI easier to implement by using just the necessary values.
+    This class is here to allow for simpler adding of new cards and mechanics,
+    as well as making UI easier to implement by using just the necessary outputs.
 */
 
 public class GameData {
@@ -102,7 +103,7 @@ public class GameData {
         }
     }
 
-    /* Query different values */
+    // return different values
         public List<Player> getPlayers() {
             return Collections.unmodifiableList(players);
         }
@@ -130,7 +131,7 @@ public class GameData {
             return gameEnabled;
         }
 
-        /* Game logic and actions */
+        // Game logic and actions
         public PlayResult playCard(int playerIndex, int cardIndex, ColorChooser chooser) {
             if (Main.debug) System.out.println("playCard");
             Player p = players.get(playerIndex);
@@ -139,17 +140,20 @@ public class GameData {
             if (!testPlayable(cardID)) return PlayResult.invalid("Card not playable");
 
             int cardValue = getCardInfo(cardID, 2);
+
+            // this is where cards with special effects go that aren't necessarily powercards
+            // (this is kind of redundant and can change if we want)
             if (cardValue >= 10 && cardValue <= 13) {
                 switch (cardValue) {
-                    case 10:
+                    case 10: // id 10 = +2
                         if (Main.debug) System.out.println("+2");
                         drawTwo = true;
                         break;
-                    case 12:
+                    case 12: // id 12 = skip
                         if (Main.debug) System.out.println("Skip");
                         skip = true;
                         break;
-                    case 13:
+                    case 13: // id 13 = reverse
                         if (Main.debug) System.out.println("Reverse");
                         reverse = !reverse;
                         turnDirection *= -1;
@@ -158,19 +162,21 @@ public class GameData {
                         System.out.println("Error indexing action card");
                         break;
                 }
+
+                // if the id is 50+ the card is a power card and has special effects
             } else if (cardValue >= 50) {
                 if (Main.debug) System.out.println("powerCard");
                 switch (getCardInfo(cardID, 2)) {
                     default:
                         System.out.println("Error indexing power card");
                         break;
-                    case 51:
+                    case 51: // id 51 = +4
                         if (Main.debug) System.out.println("+4");
                         drawFour = true;
                         colorID = chooser.chooseColor(playerIndex, cardID);
                         if (Main.debug) System.out.println("colorid = " + colorID);
                         break;
-                    case 52:
+                    case 52: // id 52 = wild card
                         if (Main.debug) System.out.println("Wild");
                         colorID = chooser.chooseColor(playerIndex, cardID);
                         if (Main.debug) System.out.println("colorid = " + colorID);
@@ -178,7 +184,6 @@ public class GameData {
                 }
             }
 
-            //value = cardValue; // set
             discardPile.push(p.hand.remove(cardIndex)); // add played card to discard pile
             if (cardID < 50) colorID = getCardInfo(cardID, 3); // get color to played card color
 

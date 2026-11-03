@@ -43,11 +43,11 @@ public class CardData {
                 String[] nextLine = csvReader.readNext();
 
                 if (nextLine != null) {
-                    name = nextLine[0];
-                    id = nextLine[1];
-                    value = nextLine[2];
+                    name = nextLine[0]; // name is column 1 in csv
+                    id = nextLine[1]; // card id is column 2
+                    value = nextLine[2]; // card value (Ace, 1, King, etc) is column 3
 
-                    switch (colorID = Integer.parseInt(nextLine[3])) {
+                    switch (colorID = Integer.parseInt(nextLine[3])) { // color is column 4
                         case 1 -> color = "Red";
                         case 2 -> color = "Blue";
                         case 3 -> color = "Green";
@@ -56,8 +56,9 @@ public class CardData {
                         default -> System.out.println("Unknown color");
                     }
 
-                    description = nextLine[4];
-                    imagePath = nextLine[5];
+
+                    description = nextLine[4]; // description is column 5, could be used for a tooltip popup that explains special card effects
+                    imagePath = nextLine[5]; // image for card is column 6
                 }
             }
         } catch (Exception e) {
@@ -65,6 +66,7 @@ public class CardData {
         }
     }
 
+    // turn card details into a string
     @Override
     public String toString() {
         return name + " (" + id + ": " + color + " " + value + ")";
