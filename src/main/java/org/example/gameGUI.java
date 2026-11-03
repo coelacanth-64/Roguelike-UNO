@@ -8,13 +8,15 @@ import java.util.List;
 
 public class gameGUI extends JPanel implements Runnable, ColorChooser {
     private Thread gameThread;
-    private boolean running = false;
+    private volatile boolean running = false;
     private final int FPS = 60;
 
     private final GameData gameData;
     private final JPanel handPanel;
     private JLabel statusLabel;
+    private JLabel turnStatsLabel;
     private int turnCount = 0;
+    private int completedTurns = 0;
     private int currentPlayer = 0;
     private final JLabel discardLabel;
     private Image backgroundImage;
@@ -29,10 +31,16 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         setLayout(new BorderLayout(10, 10));
         setPreferredSize(new Dimension(1280, 720));
 
+        JPanel statusPanel = new JPanel(new GridLayout(2, 1));
+        statusPanel.setOpaque(false);
         statusLabel = new JLabel("Player " + (currentPlayer + 1) + "'s Turn", SwingConstants.CENTER);
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-        add(statusLabel, BorderLayout.NORTH);
+        turnStatsLabel = new JLabel("", SwingConstants.CENTER);
+        turnStatsLabel.setForeground(Color.WHITE);
+        statusPanel.add(statusLabel);
+        statusPanel.add(turnStatsLabel);
+        add(statusPanel, BorderLayout.NORTH);
 
         JPanel root = new JPanel(new BorderLayout(10, 10));
         root.setOpaque(false);
@@ -55,11 +63,13 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
 
         refreshHand();
         updateDiscardDisplay();
+        updateTurnStats();
     }
 
     private Image loadBackgroundImage(String fileName) {
         try {
-            return new ImageIcon(getClass().getClassLoader().getResource("bg.png")).getImage();
+            URL imageURL = getClass().getClassLoader().getResource(fileName);
+            return imageURL == null ? null : new ImageIcon(imageURL).getImage();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -83,27 +93,27 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     }
 
     public void startGame() {
-        gameThread = new Thread(this);
+        if (running) {
+            return;
+        }
         running = true;
+        gameThread = new Thread(this, "gameGUI-render");
+        gameThread.setDaemon(true);
         gameThread.start();
     }
 
     @Override
     public void run() {
-        double drawInterval = 1000000000.0 / FPS;
-        double delta = 0;
-        long lastTime = System.nanoTime();
-        long currentTime;
-
+        // The game is event-driven; sleep between repaints instead of busy-spinning
+        // and consuming a CPU core while waiting for player input.
+        long frameDelay = 1000L / FPS;
         while (running) {
-            currentTime = System.nanoTime();
-            delta += (currentTime - lastTime) / drawInterval;
-            lastTime = currentTime;
-
-            if (delta >= 1) {
-                updateLogic();
-                repaint();
-                delta--;
+            repaint();
+            try {
+                Thread.sleep(frameDelay);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
             }
         }
     }
@@ -125,9 +135,6 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             }
 
             CardData card = gameData.getCardData(cardID);
-
-
-
             JButton cardButton = new JButton(loadCardIcon(card.imagePath));
             double scale = Math.max(0.45, 1.0 - (currentHand.size() - 7) * 0.08);
             int cardW = (int) (110 * scale);
@@ -140,11 +147,19 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             cardButton.setOpaque(false);
             cardButton.setBackground(new Color(255, 255, 255));
             cardButton.setToolTipText(card.toString());
+            cardButton.setEnabled(gameData.testPlayable(cardID));
 
             final int cardIndex = i;
             cardButton.addActionListener(e -> handleCardClick(cardIndex));
 
             handPanel.add(cardButton);
+        }
+
+        if (gameData.getDeckSize() == 0 && !gameData.checkHandPlayable(currentPlayer)
+                && gameData.isGameEnabled()) {
+            JButton passButton = new JButton("Pass turn (no playable cards; deck empty)");
+            passButton.addActionListener(e -> passTurn());
+            handPanel.add(passButton);
         }
 
         handPanel.revalidate();
@@ -156,17 +171,39 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         currentPlayer = gameData.turnIndex(turnCount);
         statusLabel.setText("Player " + (currentPlayer + 1) + "'s Turn");
 
-        ensurePlayableHand(); // This may cause a problem of a skipped player drawing cards
+        ensurePlayableHand();
         refreshHand();
+        updateTurnStats();
     }
 
     private void ensurePlayableHand() {
-        if (!gameData.checkHandPlayable(currentPlayer)) {
-            while (!gameData.checkHandPlayable(currentPlayer)) {
-                gameData.drawCards(currentPlayer, 1);
-            }
-            refreshHand();
+        // Stop drawing when the deck is exhausted. Without this guard, an
+        // unplayable hand causes an endless loop because drawCards cannot add cards.
+        while (!gameData.checkHandPlayable(currentPlayer) && gameData.getDeckSize() > 0) {
+            gameData.drawCards(currentPlayer, 1);
         }
+    }
+
+    private void passTurn() {
+        if (gameData.getDeckSize() != 0 || gameData.checkHandPlayable(currentPlayer)
+                || !gameData.isGameEnabled()) {
+            return;
+        }
+        completedTurns++;
+        updateTurnStats();
+        advanceTurn();
+    }
+
+    private void updateTurnStats() {
+        StringBuilder stats = new StringBuilder("Turns: ").append(completedTurns).append("  |  Cards: ");
+        List<Player> players = gameData.getPlayers();
+        for (int i = 0; i < players.size(); i++) {
+            if (i > 0) {
+                stats.append("   ");
+            }
+            stats.append("P").append(i + 1).append(": ").append(gameData.getPlayerHand(i).size());
+        }
+        turnStatsLabel.setText(stats.toString());
     }
 
     private void handleCardClick(int cardIndex) {
@@ -184,6 +221,8 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             return;
         }
 
+        completedTurns++;
+        updateTurnStats();
         updateDiscardDisplay();
 
         if (result.playerWon) {
@@ -266,4 +305,3 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
 
     }
 }
-
