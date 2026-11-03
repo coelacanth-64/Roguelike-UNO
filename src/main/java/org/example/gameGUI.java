@@ -150,7 +150,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             cardButton.setBorderPainted(false);
             cardButton.setOpaque(false);
             cardButton.setToolTipText(card.toString());
-            cardButton.setEnabled(gameData.testPlayable(cardID));
+            //cardButton.setEnabled(gameData.testPlayable(cardID));
 
             final int cardIndex = i;
             cardButton.addActionListener(e -> handleCardClick(cardIndex));

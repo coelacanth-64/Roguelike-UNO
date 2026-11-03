@@ -56,8 +56,9 @@ public class CardData {
                         default -> System.out.println("Unknown color");
                     }
 
+                    // description is column 5, could be used for a tooltip popup that explains special card effects
+                    description = nextLine[4];
 
-                    description = nextLine[4]; // description is column 5, could be used for a tooltip popup that explains special card effects
                     imagePath = nextLine[5]; // image for card is column 6
                 }
             }
