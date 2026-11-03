@@ -192,19 +192,46 @@ public class GameData {
             return PlayResult.winner(cardID, playerWon);
         }
 
+        /**
+         * Recycles the discard pile into the draw deck, leaving its top card in place.
+         * Returns false if there are no discard cards available to recycle.
+         */
+        private boolean refillDeckFromDiscard() {
+            if (discardPile.size() <= 1) {
+                return false;
+            }
+
+            Integer topCard = discardPile.pop();
+            while (!discardPile.isEmpty()) {
+                deck.add(discardPile.pop());
+            }
+            discardPile.push(topCard);
+            Collections.shuffle(deck, generator);
+
+            if (Main.debug) {
+                System.out.println("Refilled deck from discard pile; deck size=" + deck.size());
+            }
+            return !deck.isEmpty();
+        }
+
         public List<Integer> drawCards(int playerIndex, int count) {
             if (Main.debug) System.out.println("drawCards called: deck size before=" + deck.size() + " deckId=" + System.identityHashCode(deck));
             Player p = players.get(playerIndex);
 
             List<Integer> drawnCards = new ArrayList<>();
 
-            for (int i = 0; i < count && !deck.isEmpty(); i++) {
+            for (int i = 0; i < count; i++) {
+                // Refill on demand, including when a multi-card draw would exhaust
+                // the deck partway through (for example, a +2 or +4 effect).
+                if (deck.isEmpty() && !refillDeckFromDiscard()) {
+                    break;
+                }
+
                 Integer removed = deck.remove(deck.size() - 1);
                 if (Main.debug)
                     System.out.println("  drawCards removed: " + removed + " (deckId=" + System.identityHashCode(deck) + ")");
                 if (removed == null) {
                     System.err.println("  drawCards: removed NULL from deck! (playerIndex=" + playerIndex + ")");
-                    // do not add null to drawnCards; continue to next removal
                     continue;
                 }
                 drawnCards.add(removed);
