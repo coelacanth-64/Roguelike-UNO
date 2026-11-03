@@ -139,15 +139,15 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             int cardW = (int) (110 * scale);
             int cardH = (int) (150 * scale);
 
-            // Scale the card artwork to the same dimensions as the button so it
-            // is not clipped when the hand contains many cards.
+            // Scale each card image to the button dimensions. Do not paint an
+            // additional button border over the card artwork.
             JButton cardButton = new JButton(loadCardIcon(card.imagePath, cardW, cardH));
             cardButton.setPreferredSize(new Dimension(cardW, cardH));
             cardButton.setMargin(new Insets(0, 0, 0, 0));
-            cardButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+            cardButton.setBorder(BorderFactory.createEmptyBorder());
             cardButton.setFocusPainted(false);
             cardButton.setContentAreaFilled(false);
-            cardButton.setBorderPainted(true);
+            cardButton.setBorderPainted(false);
             cardButton.setOpaque(false);
             cardButton.setToolTipText(card.toString());
             cardButton.setEnabled(gameData.testPlayable(cardID));
