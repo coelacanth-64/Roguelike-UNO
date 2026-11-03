@@ -135,17 +135,20 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             }
 
             CardData card = gameData.getCardData(cardID);
-            JButton cardButton = new JButton(loadCardIcon(card.imagePath));
             double scale = Math.max(0.45, 1.0 - (currentHand.size() - 7) * 0.08);
             int cardW = (int) (110 * scale);
             int cardH = (int) (150 * scale);
+
+            // Scale the card artwork to the same dimensions as the button so it
+            // is not clipped when the hand contains many cards.
+            JButton cardButton = new JButton(loadCardIcon(card.imagePath, cardW, cardH));
             cardButton.setPreferredSize(new Dimension(cardW, cardH));
-            cardButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+            cardButton.setMargin(new Insets(0, 0, 0, 0));
+            cardButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
             cardButton.setFocusPainted(false);
             cardButton.setContentAreaFilled(false);
-            cardButton.setBorderPainted(false);
+            cardButton.setBorderPainted(true);
             cardButton.setOpaque(false);
-            cardButton.setBackground(new Color(255, 255, 255));
             cardButton.setToolTipText(card.toString());
             cardButton.setEnabled(gameData.testPlayable(cardID));
 
@@ -263,22 +266,26 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     }
 
     private ImageIcon loadCardIcon(String imagePath) {
+        return loadCardIcon(imagePath, 110, 150);
+    }
+
+    private ImageIcon loadCardIcon(String imagePath, int width, int height) {
         String resourcePath = (imagePath == null || imagePath.isBlank()) ? "b2fv.png" : imagePath;
         URL imageURL = getClass().getClassLoader().getResource(resourcePath);
 
         if (imageURL == null) {
-            BufferedImage placeholder = new BufferedImage(110, 150, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage placeholder = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = placeholder.createGraphics();
             g2.setColor(new Color(32, 32, 32));
-            g2.fillRect(0, 0, 110, 150);
+            g2.fillRect(0, 0, width, height);
             g2.setColor(Color.WHITE);
-            g2.drawRect(5, 5, 100, 140);
+            g2.drawRect(Math.max(1, width / 22), Math.max(1, height / 30), width - Math.max(2, width / 11), height - Math.max(2, height / 15));
             g2.dispose();
             return new ImageIcon(placeholder);
         }
 
         ImageIcon icon = new ImageIcon(imageURL);
-        Image scaled = icon.getImage().getScaledInstance(110, 150, Image.SCALE_SMOOTH);
+        Image scaled = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
     }
 
