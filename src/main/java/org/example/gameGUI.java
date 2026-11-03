@@ -155,9 +155,8 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             handPanel.add(cardButton);
         }
 
-        if (gameData.getDeckSize() == 0 && !gameData.checkHandPlayable(currentPlayer)
-                && gameData.isGameEnabled()) {
-            JButton passButton = new JButton("Pass turn (no playable cards; deck empty)");
+        if (!gameData.checkHandPlayable(currentPlayer) && gameData.isGameEnabled()) {
+            JButton passButton = new JButton("Pass turn (no playable cards; no cards to draw)");
             passButton.addActionListener(e -> passTurn());
             handPanel.add(passButton);
         }
@@ -177,16 +176,24 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     }
 
     private void ensurePlayableHand() {
-        // Stop drawing when the deck is exhausted. Without this guard, an
-        // unplayable hand causes an endless loop because drawCards cannot add cards.
-        while (!gameData.checkHandPlayable(currentPlayer) && gameData.getDeckSize() > 0) {
-            gameData.drawCards(currentPlayer, 1);
+        // drawCards now recycles the discard pile (except its top card) into the
+        // deck when needed. Continue drawing until this hand is playable or the
+        // game has no cards left to recycle. An empty draw result means no
+        // progress is possible and prevents an infinite loop.
+        while (!gameData.checkHandPlayable(currentPlayer)) {
+            List<Integer> drawnCards = gameData.drawCards(currentPlayer, 1);
+            if (drawnCards.isEmpty()) {
+                break;
+            }
         }
     }
 
     private void passTurn() {
-        if (gameData.getDeckSize() != 0 || gameData.checkHandPlayable(currentPlayer)
-                || !gameData.isGameEnabled()) {
+        // Recheck/draw before passing in case the discard pile has become
+        // recyclable since the button was rendered.
+        ensurePlayableHand();
+        if (gameData.checkHandPlayable(currentPlayer) || !gameData.isGameEnabled()) {
+            refreshHand();
             return;
         }
         completedTurns++;
