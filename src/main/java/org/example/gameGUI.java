@@ -157,7 +157,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         statusLabel.setText("Player " + (currentPlayer + 1) + "'s Turn");
 
         ensurePlayableHand(); // This may cause a problem of a skipped player drawing cards
-        //refreshHand();
+        refreshHand();
     }
 
     private void ensurePlayableHand() {
