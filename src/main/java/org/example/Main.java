@@ -35,7 +35,7 @@ public class Main {
             });
         }
 
-        // not fully finished, using older code but should still work.
+        // not fully updated, (using older code) but should still work.
         if (runConsoleGame) {
             System.out.println("Running game in console.");
             GameData game = new GameData();
