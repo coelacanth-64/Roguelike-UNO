@@ -27,9 +27,8 @@ public class GameData {
     private int value = 0;
     private int cardID = 0;
 
-    // flags for current game state
-    boolean drawFour = false;
-    boolean drawTwo = false;
+    // Pending penalty cards to draw at the beginning of the next turn.
+    int nextTurnDrawCount = 0;
     boolean skip = false;
     boolean reverse = false;
     private boolean gameEnabled = true;
@@ -77,8 +76,7 @@ public class GameData {
         players.clear();
         gameEnabled = true;
         turnDirection = 1;
-        drawFour = false;
-        drawTwo = false;
+        nextTurnDrawCount = 0;
         skip = false;
         reverse = false;
 
@@ -146,7 +144,7 @@ public class GameData {
             switch (cardValue) {
                 case 10: // id 10 = +2
                     if (Main.debug) System.out.println("+2");
-                    drawTwo = true;
+                    nextTurnDrawCount = 2;
                     break;
                 case 12: // id 12 = skip
                     if (Main.debug) System.out.println("Skip");
@@ -164,7 +162,7 @@ public class GameData {
         } else if (isWildOrPlusFour(playedCardID)) {
             if (cardValue == 51) {
                 if (Main.debug) System.out.println("+4");
-                drawFour = true;
+                nextTurnDrawCount = 4;
             } else if (Main.debug) {
                 System.out.println("Wild");
             }
