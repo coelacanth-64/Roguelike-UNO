@@ -33,6 +33,13 @@ public class Console implements ColorChooser {
         while (GameData.isGameEnabled()) {
             int currentPlayer = GameData.turnIndex(turnCount);
 
+            // Apply queued draw penalties before checking whether the hand is playable.
+            if (GameData.nextTurnDrawCount > 0) {
+                int drawCount = GameData.nextTurnDrawCount;
+                GameData.drawCards(currentPlayer, drawCount);
+                GameData.nextTurnDrawCount = 0;
+            }
+
             if (Main.debug) {
                 System.out.println("DEBUG (PRE ACTION CARD): Player " + (currentPlayer + 1) + " hand:");
                 GameData.getPlayers().get(currentPlayer).displayHandToConsole(GameData);
@@ -40,15 +47,7 @@ public class Console implements ColorChooser {
                 System.out.println("DEBUG (DECK SIZE): " + GameData.getDeckSize());
             }
 
-            if (GameData.drawTwo) {
-                GameData.drawCards(currentPlayer, 2);
-                GameData.drawTwo = false;
-            }
-            else if (GameData.drawFour) {
-                GameData.drawCards(currentPlayer, 4);
-                GameData.drawFour = false;
-            }
-            else if (GameData.skip) {
+            if (GameData.skip) {
                 System.out.println("Skipped player " + (currentPlayer + 1) + "'s turn.");
                 GameData.skip = false;
                 turnCount += GameData.turnDirection;
@@ -61,15 +60,15 @@ public class Console implements ColorChooser {
             }
 
             if (!GameData.checkHandPlayable(currentPlayer)) {
-            System.out.println("Unplayable hand. Drawing until playable.");
-            while (!GameData.checkHandPlayable(currentPlayer)) {
-                GameData.drawCards(currentPlayer, 1);
-                if (Main.debug) {
-                    System.out.println("DEBUG (PLAYABLEHANDCHECK): Player " + (currentPlayer + 1) + " hand:");
-                    GameData.getPlayers().get(currentPlayer).displayHandToConsole(GameData);
+                System.out.println("Unplayable hand. Drawing until playable.");
+                while (!GameData.checkHandPlayable(currentPlayer)) {
+                    GameData.drawCards(currentPlayer, 1);
+                    if (Main.debug) {
+                        System.out.println("DEBUG (PLAYABLEHANDCHECK): Player " + (currentPlayer + 1) + " hand:");
+                        GameData.getPlayers().get(currentPlayer).displayHandToConsole(GameData);
+                    }
                 }
             }
-        }
 
             if (Main.debug) System.out.println("DEBUG: POST PLAYABLE HAND CHECK\nReverse State: " + GameData.reverse);
             System.out.println("Player " + (currentPlayer + 1) + " hand:");
@@ -88,7 +87,7 @@ public class Console implements ColorChooser {
             } else {
                 PlayResult result = GameData.playCard(currentPlayer, selection - 1, this);
                 if (!result.winner) System.out.println("Invalid play: " + result.message);
-                    else System.out.println("Played card id: " + result.playedCardID);
+                else System.out.println("Played card id: " + result.playedCardID);
                 if (result.playerWon) { System.out.println("Winner decided! Congratulations!"); break; }
             }
             turnCount += GameData.turnDirection;
