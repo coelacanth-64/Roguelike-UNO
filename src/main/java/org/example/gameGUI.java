@@ -170,8 +170,24 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
 
     private void advanceTurn() {
         turnCount += gameData.turnDirection;
+
+        // A skip consumes the immediately following turn, so move past that player
+        // before resolving queued draws or checking hand playability.
+        if (gameData.skip) {
+            gameData.skip = false;
+            turnCount += gameData.turnDirection;
+        }
+
         currentPlayer = gameData.turnIndex(turnCount);
         statusLabel.setText("Player " + (currentPlayer + 1) + "'s Turn");
+
+        // Resolve draw penalties at the start of the recipient's turn, before
+        // checking whether their hand is playable.
+        if (gameData.nextTurnDrawCount > 0) {
+            int drawCount = gameData.nextTurnDrawCount;
+            gameData.drawCards(currentPlayer, drawCount);
+            gameData.nextTurnDrawCount = 0;
+        }
 
         ensurePlayableHand();
         refreshHand();
@@ -247,21 +263,8 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             return;
         }
 
-        if (gameData.drawTwo) {
-            gameData.drawCards(currentPlayer, 2);
-            gameData.drawTwo = false;
-        } else if (gameData.drawFour) {
-            gameData.drawCards(currentPlayer, 4);
-            gameData.drawFour = false;
-        }
-
-        if (gameData.skip) {
-            gameData.skip = false;
-            advanceTurn();
-            advanceTurn();
-            return;
-        }
-
+        // advanceTurn resolves any queued +2/+4 at the start of the next
+        // player's turn. It also accounts for a skipped turn.
         advanceTurn();
     }
 
