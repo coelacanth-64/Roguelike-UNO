@@ -9,7 +9,7 @@ import javax.swing.*;
 */
 
 public class Main {
-    public static boolean debug = false;
+    public static boolean debug = true;
     public static int handSize = 7;
     public static int deckSize = 54;
     public static int playerCount = 4;
