@@ -85,13 +85,23 @@ public class GameData {
             System.out.println("INIT deck identity: " + System.identityHashCode(deck));
         }
 
-        for (int i = 0; i < numPlayers; i++) {
-            Player p = new Player();
+        for (int i = 0; i < numPlayers; i++) { //A - Edited to add the Bot
+            //Player p = new Player();
+            // p.handInit(handSize, deck);
+            // p.turnValue = i;
+            //players.add(p);
+            Player p;
+            if (i == Main.botPlayerIndex){
+                p = new Bot();
+            }else{
+                p = new Player();
+            }
             p.handInit(handSize, deck);
             p.turnValue = i;
-            players.add(p);
+            players.add(p); // A - Player 5 is initialized as the Bot
         }
-
+        
+        
         if (Main.debug) {
             System.out.println(colorID);
             System.out.println(value);

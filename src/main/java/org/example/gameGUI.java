@@ -124,6 +124,16 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
 
     private void refreshHand() {
         handPanel.removeAll();
+        
+    if (currentPlayer == Main.botPlayerIndex) { // A - This should hide the bots hand from the player.
+    JLabel botLabel = new JLabel("Bot is thinking...");
+    botLabel.setForeground(Color.WHITE);
+    handPanel.add(botLabel);
+
+    handPanel.revalidate();
+    handPanel.repaint();
+    return;
+    }
 
         List<Integer> currentHand = gameData.getPlayerHand(currentPlayer);
 
@@ -179,7 +189,12 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         }
 
         currentPlayer = gameData.turnIndex(turnCount);
-        statusLabel.setText("Player " + (currentPlayer + 1) + "'s Turn");
+        //statusLabel.setText("Player " + (currentPlayer + 1) + "'s Turn");
+        if (currentPlayer == Main.botPlayerIndex) { // Used to check bots or players turn and adds labels
+            statusLabel.setText("Bot's Turn");
+        } else {
+            statusLabel.setText("Player " + (currentPlayer + 1) + "'s Turn");
+}
 
         // Resolve draw penalties at the start of the recipient's turn, before
         // checking whether their hand is playable.
@@ -192,6 +207,36 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         ensurePlayableHand();
         refreshHand();
         updateTurnStats();
+        scheduleBotTurn(); // A - add the bots playble turn
+    }
+    
+    private void scheduleBotTurn() { // A - Gives the bot a timer until it plays so it's not instant
+    if (currentPlayer != Main.botPlayerIndex ||
+            !gameData.isGameEnabled()) {
+        return;
+    }
+
+    Timer timer = new Timer(800, e -> {
+
+        if (!gameData.isGameEnabled() ||
+                currentPlayer != Main.botPlayerIndex) {
+            return;
+        }
+
+        Bot bot = (Bot) gameData.getPlayers().get(currentPlayer);
+
+        int cardIndex = bot.chooseCardIndex(gameData);
+
+        if (cardIndex == -1) {
+            passTurn();
+            return;
+        }
+
+        handleBotCardPlay(cardIndex, bot);
+    });
+
+    timer.setRepeats(false);
+    timer.start();
     }
 
     private void ensurePlayableHand() {
@@ -232,7 +277,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         turnStatsLabel.setText(stats.toString());
     }
 
-    private void handleCardClick(int cardIndex) {
+    /*private void handleCardClick(int cardIndex) {
 
         if (!gameData.isGameEnabled()) {
             JOptionPane.showMessageDialog(this, "The game is over.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
@@ -266,6 +311,66 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         // advanceTurn resolves any queued +2/+4 at the start of the next
         // player's turn. It also accounts for a skipped turn.
         advanceTurn();
+    }*/
+    
+    private void handleCardClick(int cardIndex) { // A - Should handle both player cards and Bots cards. Allows bot to play by same rules
+    handleCardPlay(cardIndex, this);
+    }
+    
+    private void handleBotCardPlay(int cardIndex, Bot bot) {
+    handleCardPlay(cardIndex, bot);
+}
+
+private void handleCardPlay(int cardIndex, ColorChooser chooser) {
+
+    if (!gameData.isGameEnabled()) {
+        return;
+    }
+
+    PlayResult result = gameData.playCard(
+        currentPlayer, cardIndex, chooser
+    );
+
+    if (!result.winner) {
+        JOptionPane.showMessageDialog(
+            this,
+            result.message,
+            "Invalid Play",
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        refreshHand();
+        return;
+    }
+
+    completedTurns++;
+    updateTurnStats();
+    updateDiscardDisplay();
+
+    if (result.playerWon) {
+
+        boolean botWon = currentPlayer == Main.botPlayerIndex;
+
+        String winner = botWon
+            ? "Bot"
+            : "Player " + (currentPlayer + 1);
+
+        statusLabel.setText(winner + " wins!");
+
+        handPanel.removeAll();
+
+        JLabel winnerLabel = new JLabel("Winner: " + winner);
+        winnerLabel.setForeground(Color.WHITE);
+        winnerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        handPanel.add(winnerLabel);
+        handPanel.revalidate();
+        handPanel.repaint();
+
+        return;
+    }
+
+    advanceTurn();
     }
 
     private ImageIcon loadCardIcon(String imagePath) {

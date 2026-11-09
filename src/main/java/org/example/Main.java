@@ -12,7 +12,8 @@ public class Main {
     public static boolean debug = false;
     public static int handSize = 7;
     public static int deckSize = 54;
-    public static int playerCount = 4;
+    public static int playerCount = 5; // A - Changed to 5 players to account for the bot
+    public static int botPlayerIndex = 4; // A - Added for the bots index
     public static boolean runUIGame = true;
     public static boolean runConsoleGame = false;
 
