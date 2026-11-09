@@ -1,20 +1,31 @@
-# UNO 
+# ***Roguelike UNO***
 
-## Authors
-UNO made by Ashton Ennis and Austin Dossett
-## Introduction
-This project is intended to be a Roguelike interpretation on the game UNO. Players will make use of cards from UNO, as well as custom cards, to make it through levels of increasing difficulty.
-## Features
-## Upcoming Fatures
--- Levels
 
--- AI Opponents
+### **Authors**
+Made by Ashton Ennis and Austin Dossett
 
--- UI
+---------------------------------
 
--- Themes
+#### Introduction
+This project is intended to be a Java-based Roguelike interpretation on the game UNO. Players will make use of cards from UNO, as well as gaining custom cards, to make it through levels of increasing difficulty and beat the game.
 
--- More Custom Cards
+#### Features
+* A Java Swing interface
+* Fully functional UNO gameplay, including action cards
+* Four-player local play
+* A bot opponent with gameplay decisions based on the state of the game
 
-## Known Bugs
+#### Requirements
+* Java 18 or later
+* Maven
+
+#### How to Run
+* Open as a Maven project and run Main, or
+* Run the included jar file in uno3\out\artifacts\uno3_jar\
+
+#### Roadmap
+* Levels and roguelike progression
+* Custom cards to enhance gameplay
+* Expand bot and local gameplay options
+* UI Improvements & Themes
 
