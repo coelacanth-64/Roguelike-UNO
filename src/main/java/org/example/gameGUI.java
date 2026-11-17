@@ -78,6 +78,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
 
     private void updateDiscardDisplay() {
         int topCardId = gameData.getTopDiscard();
+        if(Main.debug) System.out.println(gameData.getCardData(topCardId));
 
         if (topCardId < 0) {
             discardLabel.setIcon(null);
