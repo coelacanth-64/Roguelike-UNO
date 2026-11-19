@@ -86,7 +86,7 @@ public class Console implements ColorChooser {
                 System.out.println("Drew: " + drawn);
             } else {
                 PlayResult result = GameData.playCard(currentPlayer, selection - 1, this);
-                if (!result.winner) System.out.println("Invalid play: " + result.message);
+                if (!result.validPlay) System.out.println("Invalid play: " + result.message);
                 else System.out.println("Played card id: " + result.playedCardID);
                 if (result.playerWon) { System.out.println("Winner decided! Congratulations!"); break; }
             }

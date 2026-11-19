@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.List;
 
-public class gameGUI extends JPanel implements Runnable, ColorChooser {
+public class GameGUI extends JPanel implements ColorChooser {
     private Thread gameThread;
     private volatile boolean running = false;
     private final int FPS = 60;
@@ -22,7 +22,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     private Image backgroundImage;
 
 
-    public gameGUI() {
+    public GameGUI() {
         this.gameData = new GameData();
         this.gameData.initGame(Main.handSize, Main.deckSize, Main.playerCount);
 
@@ -93,6 +93,7 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         discardLabel.setIcon(icon);
     }
 
+    /*
     public void startGame() {
         if (running) {
             return;
@@ -102,7 +103,9 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         gameThread.setDaemon(true);
         gameThread.start();
     }
+    */
 
+    /*
     @Override
     public void run() {
         // The game is event-driven; sleep between repaints instead of busy-spinning
@@ -118,14 +121,11 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
             }
         }
     }
-
-    private void updateLogic() {
-        // Turns are driven by the player UI actions, not by this render loop.
-    }
+    */
 
     private void refreshHand() {
         handPanel.removeAll();
-        
+
     if (currentPlayer == Main.botPlayerIndex) { // A - This should hide the bots hand from the player.
     JLabel botLabel = new JLabel("Bot is thinking...");
     botLabel.setForeground(Color.WHITE);
@@ -278,7 +278,8 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
         turnStatsLabel.setText(stats.toString());
     }
 
-    /*private void handleCardClick(int cardIndex) {
+    /*
+    private void handleCardClick(int cardIndex) {
 
         if (!gameData.isGameEnabled()) {
             JOptionPane.showMessageDialog(this, "The game is over.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
@@ -315,14 +316,14 @@ public class gameGUI extends JPanel implements Runnable, ColorChooser {
     }*/
     
     private void handleCardClick(int cardIndex) { // A - Should handle both player cards and Bots cards. Allows bot to play by same rules
-    handleCardPlay(cardIndex, this);
+        handleCardPlay(cardIndex, this);
     }
     
     private void handleBotCardPlay(int cardIndex, Bot bot) {
-    handleCardPlay(cardIndex, bot);
-}
+        handleCardPlay(cardIndex, bot);
+    }
 
-private void handleCardPlay(int cardIndex, ColorChooser chooser) {
+    private void handleCardPlay(int cardIndex, ColorChooser chooser) {
 
     if (!gameData.isGameEnabled()) {
         return;
@@ -332,7 +333,7 @@ private void handleCardPlay(int cardIndex, ColorChooser chooser) {
         currentPlayer, cardIndex, chooser
     );
 
-    if (!result.winner) {
+    if (!result.validPlay) {
         JOptionPane.showMessageDialog(
             this,
             result.message,

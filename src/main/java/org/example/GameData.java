@@ -15,6 +15,7 @@ import java.util.*;
 public class GameData {
     private final Random generator = new Random(System.nanoTime());
 
+    //
     private final ArrayList<Integer> deck = new ArrayList<>();
     private final Deque<Integer> discardPile = new ArrayDeque<>();
     private final List<Player> players = new ArrayList<>();
@@ -22,7 +23,7 @@ public class GameData {
     // get CardData from a cardID
     private final Map<Integer, CardData> cardCache = new HashMap<>();
 
-    // Active color chosen for the current turn (particularly important after a wild).
+    // Active color chosen for the current turn.
     private int colorID = 5;
     private int value = 0;
     private int cardID = 0;
@@ -33,6 +34,16 @@ public class GameData {
     boolean reverse = false;
     private boolean gameEnabled = true;
     int turnDirection = 1;
+
+    // Card ID to Card Type
+    private static final int SPECIAL_CARD_THRESHOLD = 10;
+    private static final int VALUE_DRAW_TWO = 10;
+    private static final int VALUE_SKIP = 12;
+    private static final int VALUE_REVERSE = 13;
+    private static final int ACTION_THRESHOLD = 50;
+    private static final int VALUE_WILD = 52;
+    private static final int VALUE_WILD_DRAW_FOUR = 51;
+
 
     public GameData() { }
 
@@ -123,10 +134,12 @@ public class GameData {
     }
 
     public int getTopDiscard() {
-        if (discardPile.peek() != null)
-            return discardPile.peek();
-        else
+        Integer topCard = discardPile.peek();
+        if (topCard == null) {
             return -1;
+        } else {
+            return topCard;
+        }
     }
 
     public int getDeckSize() {
@@ -149,32 +162,35 @@ public class GameData {
 
         int cardValue = getCardInfo(playedCardID, 2);
 
-        // this is where cards with special effects go that aren't necessarily powercards
-        if (cardValue >= 10 && cardValue <= 13) {
+        // this is where cards  go that aren't special
+        if (cardValue >= SPECIAL_CARD_THRESHOLD && cardValue < ACTION_THRESHOLD) {
             switch (cardValue) {
-                case 10: // id 10 = +2
+                case VALUE_DRAW_TWO: // id 10 = +2
                     if (Main.debug) System.out.println("+2");
                     nextTurnDrawCount = 2;
                     break;
-                case 12: // id 12 = skip
+                case VALUE_SKIP: // id 12 = skip
                     if (Main.debug) System.out.println("Skip");
                     skip = true;
                     break;
-                case 13: // id 13 = reverse
+                case VALUE_REVERSE: // id 13 = reverse
                     if (Main.debug) System.out.println("Reverse");
                     reverse = !reverse;
                     turnDirection *= -1;
                     break;
                 default:
-                    System.out.println("Error indexing action card");
+                    System.out.println("Error indexing card");
                     break;
             }
         } else if (isWildOrPlusFour(playedCardID)) {
-            if (cardValue == 51) {
+            if (cardValue == VALUE_WILD_DRAW_FOUR) // id 51 = +4
+            {
                 if (Main.debug) System.out.println("+4");
                 nextTurnDrawCount = 4;
-            } else if (Main.debug) {
-                System.out.println("Wild");
+            }
+            else if (cardValue == VALUE_WILD)  // id 52 = wild
+            {
+                if (Main.debug) System.out.println("Wild");
             }
             int chosenColor = chooser == null ? 1 : chooser.chooseColor(playerIndex, playedCardID);
             colorID = (chosenColor >= 1 && chosenColor <= 4) ? chosenColor : 1;
@@ -189,7 +205,7 @@ public class GameData {
 
         boolean playerWon = p.hand.isEmpty();
         if (playerWon) gameEnabled = false;
-        return PlayResult.winner(playedCardID, playerWon);
+        return PlayResult.validPlay(playedCardID, playerWon);
     }
 
     /**

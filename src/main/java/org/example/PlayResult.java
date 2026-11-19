@@ -7,18 +7,18 @@ package org.example;
 */
 
 public class PlayResult {
-    public final boolean winner;
+    public final boolean validPlay;
     public final String message;
     public final Integer playedCardID;
     public final boolean playerWon;
 
-    private PlayResult(boolean winner, String message, Integer playedCardId, boolean playerWon) {
-        this.winner = winner;
+    private PlayResult(boolean validPlay, String message, Integer playedCardId, boolean playerWon) {
+        this.validPlay = validPlay;
         this.message = message;
         this.playedCardID = playedCardId;
         this.playerWon = playerWon;
     }
-    public static PlayResult winner(int cardId, boolean playerWon) {
+    public static PlayResult validPlay(int cardId, boolean playerWon) {
         return new PlayResult(true, "Played", cardId, playerWon);
     }
     public static PlayResult invalid(String message) {

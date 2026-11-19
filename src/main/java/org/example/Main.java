@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.*;
 import javax.swing.*;
 
 /*
@@ -10,10 +9,10 @@ import javax.swing.*;
 
 public class Main {
     public static boolean debug = true;
-    public static int handSize = 7;
+    public static int handSize = 5;
     public static int deckSize = 54;
-    public static int playerCount = 5; // A - Changed to 5 players to account for the bot
-    public static int botPlayerIndex = 4; // A - Added for the bots index
+    public static int playerCount = 2;
+    public static int botPlayerIndex = 1;
     public static boolean runUIGame = true;
     public static boolean runConsoleGame = false;
 
@@ -23,7 +22,7 @@ public class Main {
             System.out.println("Running game UI.");
             SwingUtilities.invokeLater(() -> {
                 JFrame frame = new JFrame("Roguelike UNO");
-                gameGUI gui = new gameGUI();
+                GameGUI gui = new GameGUI();
 
                 frame.setContentPane(gui);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +30,7 @@ public class Main {
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
 
-                gui.startGame();
+                //gui.startGame();
 
             });
         }
